@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id         String   @id @default(uuid())
+  email      String
+  passphrase String
+  createdAt  DateTime @default(now())
+  lastLogin  DateTime @default(now())
+}
+
+model Developer {
+  id         String    @id @default(uuid())
+  name       String
+  email      String
+  passphrase String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+
+  applications Application[]
+}
+
+model Application {
+  id                String                  @id @default(uuid())
+  name              String
+  reverseDomain     String                  @unique
+  dockerImageUser   String
+  dockerImageName   String                  @unique
+  dockerImageTag    String                  @default("latest")
+  dockerRegistryUrl String?
+  description       String
+  spot              String
+  logo              String
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  deletedAt         DateTime?
+  lastLogin         DateTime                @default(now())
+  editorsChoice     Boolean                 @default(false)
+  sourceCode        String
+  websiteUrl        String?
+  privacyPolicyUrl  String?
+  termsOfServiceUrl String?
+  supportUrl        String?
+  supportEmail      String?
+  license           License
+  publishStatus     PublishStatus           @default(REQUESTED)
+  permissions       ApplicationPermission[] @default([])
+  Developer         Developer?              @relation(fields: [developerId], references: [id])
+  developerId       String?
+}
+
+enum PublishStatus {
+  REQUESTED
+  REVIEWING
+  REJECTED
+  PUBLISHED
+  UNPUBLISHED
+  REMOVED
+  ORPHANED
+}
+
+enum License {
+  GPLv3
+  GPLv2
+  MIT
+  APACHE
+  BSD
+  CC0
+  UNLICENSED
+  OTHER
+}
+
+enum ApplicationPermission {
+  VOLUME
+  NETWORK
+}
