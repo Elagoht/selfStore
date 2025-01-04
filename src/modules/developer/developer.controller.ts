@@ -11,7 +11,7 @@ import { DeveloperService } from "./developer.service"
 import { RegisterDeveloperDto } from "./dto/register-developer.dto"
 import { LoginDeveloperDto } from "./dto/login-developer.dto"
 import { JwtAuthGuard } from "../../auth/jwt.guard"
-import { ProfileDeveloperDto } from "./dto/profile-developrt.dto"
+import { ProfileDeveloperDto } from "./dto/profile-developer.dto"
 import { ApiOperation, ApiResponse } from "@nestjs/swagger"
 import { LoginResponseDto } from "./dto/login-response.dto"
 
