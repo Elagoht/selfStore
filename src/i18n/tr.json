@@ -1,0 +1,24 @@
+{
+  "common": {
+    "errors": {
+      "unauthorized": "Yetkisiz erişim",
+      "notFound": "Kaynak bulunamadı",
+      "forbidden": "Bu kaynağa erişmek için yetkiniz yok",
+      "conflict": "Kaynak zaten mevcut"
+    }
+  },
+  "modules": {
+    "developer": {
+      "errors": {
+        "authentication": "Geçersiz kimlik bilgileri",
+        "conflict": "Geliştirici zaten mevcut",
+        "notFound": "Geliştirici bulunamadı"
+      }
+    },
+    "applications": {
+      "errors": {
+        "forbidden": "Uygulama oluşturmak için onayınız yok"
+      }
+    }
+  }
+}
