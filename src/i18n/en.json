@@ -1,0 +1,24 @@
+{
+  "common": {
+    "errors": {
+      "unauthorized": "Unauthorized access",
+      "notFound": "Resource not found",
+      "forbidden": "You are not allowed to access this resource",
+      "conflict": "Resource already exists"
+    }
+  },
+  "modules": {
+    "developer": {
+      "errors": {
+        "authentication": "Invalid credentials",
+        "conflict": "Developer already exists",
+        "notFound": "Developer not found"
+      }
+    },
+    "applications": {
+      "errors": {
+        "forbidden": "You are not approved to create applications"
+      }
+    }
+  }
+}
