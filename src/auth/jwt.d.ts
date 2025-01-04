@@ -3,5 +3,6 @@ type AuthRequest = Request & {
     id: string
     username: string
     email: string
+    approved: boolean
   }
 }

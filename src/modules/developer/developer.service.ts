@@ -81,7 +81,8 @@ export class DeveloperService {
     const payload = {
       id: developer.id,
       email: developer.email,
-      username: developer.username
+      username: developer.username,
+      approved: developer.approved
     }
     return this.jwtService.sign(payload)
   }
