@@ -1,14 +1,14 @@
 import {
-  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException
 } from "@nestjs/common"
-import { Developer, PrismaClient } from "@prisma/client"
-import { RegisterDeveloperDto } from "./dto/register-developer.dto"
-import { compare, genSalt, hash } from "bcrypt"
-import { LoginDeveloperDto } from "./dto/login-developer.dto"
 import { JwtService } from "@nestjs/jwt"
+import { Developer, PrismaClient } from "@prisma/client"
+import { compare, genSalt, hash } from "bcrypt"
+import GoalKeeper from "src/utils/GoalKeeper"
+import { LoginDeveloperDto } from "./dto/login-developer.dto"
+import { RegisterDeveloperDto } from "./dto/register-developer.dto"
 
 const prisma = new PrismaClient()
 
@@ -17,32 +17,25 @@ export class DeveloperService {
   constructor(private jwtService: JwtService) {}
 
   async register(createDeveloperDto: RegisterDeveloperDto) {
-    const existingDeveloper = await prisma.developer.findUnique({
-      where: {
-        email: createDeveloperDto.email
-      }
+    return await GoalKeeper.startShift(async () => {
+      const salt = await genSalt(10)
+      const hashedPassphrase = await hash(createDeveloperDto.passphrase, salt)
+
+      const developer = await prisma.developer.create({
+        data: {
+          username: createDeveloperDto.username,
+          email: createDeveloperDto.email,
+          passphrase: hashedPassphrase,
+          gitProfileUrl: createDeveloperDto.gitProfileUrl,
+          bio: createDeveloperDto.bio,
+          websiteUrl: createDeveloperDto.websiteUrl,
+          realName: createDeveloperDto.realName
+        }
+      })
+
+      const token = this.generateToken(developer)
+      return { token }
     })
-
-    if (existingDeveloper)
-      throw new ConflictException("Developer already exists")
-
-    const salt = await genSalt(10)
-    const hashedPassphrase = await hash(createDeveloperDto.passphrase, salt)
-
-    const developer = await prisma.developer.create({
-      data: {
-        username: createDeveloperDto.username,
-        email: createDeveloperDto.email,
-        passphrase: hashedPassphrase,
-        gitProfileUrl: createDeveloperDto.gitProfileUrl,
-        bio: createDeveloperDto.bio,
-        websiteUrl: createDeveloperDto.websiteUrl,
-        realName: createDeveloperDto.realName
-      }
-    })
-
-    const token = this.generateToken(developer)
-    return { token }
   }
 
   async login(loginDeveloperDto: LoginDeveloperDto) {
