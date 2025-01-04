@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common"
+import { ForbiddenException, Injectable } from "@nestjs/common"
 import { PrismaClient, PublishStatus } from "@prisma/client"
 import GoalKeeper from "src/utils/GoalKeeper"
 import { CreateApplicationDto } from "./dto/create-application.dto"
@@ -9,8 +9,15 @@ const prisma = new PrismaClient()
 export class ApplicationsService {
   async create(
     createApplicationDto: CreateApplicationDto,
-    developerId: string
+    developerId: string,
+    approved: boolean
   ) {
+    if (!approved) {
+      throw new ForbiddenException(
+        "You are not approved to create applications"
+      )
+    }
+
     return await GoalKeeper.startShift(() => {
       return prisma.application.create({
         data: {

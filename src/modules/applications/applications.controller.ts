@@ -7,8 +7,6 @@ import {
   Request,
   UseGuards
 } from "@nestjs/common"
-import { ApplicationsService } from "./applications.service"
-import { CreateApplicationDto } from "./dto/create-application.dto"
 import {
   ApiBearerAuth,
   ApiBody,
@@ -16,8 +14,10 @@ import {
   ApiResponse,
   ApiTags
 } from "@nestjs/swagger"
-import { Application } from "./entities/application.entity"
 import { JwtAuthGuard } from "src/auth/jwt.guard"
+import { ApplicationsService } from "./applications.service"
+import { CreateApplicationDto } from "./dto/create-application.dto"
+import { Application } from "./entities/application.entity"
 
 @ApiTags("Store")
 @Controller("store")
@@ -44,7 +44,8 @@ export class ApplicationsController {
   ) {
     return this.applicationsService.create(
       createApplicationDto,
-      request.user.id
+      request.user.id,
+      request.user.approved
     )
   }
 
