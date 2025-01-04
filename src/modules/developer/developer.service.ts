@@ -4,7 +4,7 @@ import {
   NotFoundException,
   UnauthorizedException
 } from "@nestjs/common"
-import { PrismaClient } from "@prisma/client"
+import { Developer, PrismaClient } from "@prisma/client"
 import { RegisterDeveloperDto } from "./dto/register-developer.dto"
 import { compare, genSalt, hash } from "bcrypt"
 import { LoginDeveloperDto } from "./dto/login-developer.dto"
@@ -42,7 +42,7 @@ export class DeveloperService {
     })
 
     const token = this.generateToken(developer)
-    return { developer, token }
+    return { token }
   }
 
   async login(loginDeveloperDto: LoginDeveloperDto) {
@@ -83,9 +83,9 @@ export class DeveloperService {
     }
   }
 
-  private generateToken(developer: any) {
+  private generateToken(developer: Developer) {
     const payload = {
-      sub: developer.id,
+      id: developer.id,
       email: developer.email,
       username: developer.username
     }
