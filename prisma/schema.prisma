@@ -16,13 +16,18 @@ model Admin {
 }
 
 model Developer {
-  id         String    @id @default(uuid())
-  name       String
-  email      String
-  passphrase String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
+  id            String    @id @default(uuid())
+  username      String    @unique
+  realName      String?
+  email         String    @unique
+  passphrase    String
+  gitProfileUrl String
+  bio           String?
+  websiteUrl    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  lastLogin     DateTime  @default(now())
 
   applications Application[]
 }
