@@ -12,7 +12,7 @@ import { RegisterDeveloperDto } from "./dto/register-developer.dto"
 import { LoginDeveloperDto } from "./dto/login-developer.dto"
 import { JwtAuthGuard } from "../../auth/jwt.guard"
 import { ProfileDeveloperDto } from "./dto/profile-developer.dto"
-import { ApiOperation, ApiResponse } from "@nestjs/swagger"
+import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger"
 import { LoginResponseDto } from "./dto/login-response.dto"
 
 @Controller("auth")
@@ -44,9 +44,9 @@ export class DeveloperController {
   @ApiOperation({
     summary: "Get developer profile",
     description:
-      "Retrieves the profile information for the authenticated developer",
-    security: [{ bearer: [] }]
+      "Retrieves the profile information for the authenticated developer"
   })
+  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: "Profile retrieved successfully",

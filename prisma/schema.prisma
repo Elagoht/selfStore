@@ -57,8 +57,8 @@ model Application {
   license           License
   publishStatus     PublishStatus           @default(REQUESTED)
   permissions       ApplicationPermission[] @default([])
-  Developer         Developer?              @relation(fields: [developerId], references: [id])
-  developerId       String?
+  developerId       String
+  Developer         Developer               @relation(fields: [developerId], references: [id])
 }
 
 enum PublishStatus {

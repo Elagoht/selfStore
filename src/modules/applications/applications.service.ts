@@ -6,12 +6,13 @@ const prisma = new PrismaClient()
 
 @Injectable()
 export class ApplicationsService {
-  create(createApplicationDto: CreateApplicationDto) {
+  create(createApplicationDto: CreateApplicationDto, developerId: string) {
     return prisma.application.create({
       data: {
         ...createApplicationDto,
         publishStatus: PublishStatus.REQUESTED,
-        permissions: []
+        permissions: [],
+        developerId: developerId
       }
     })
   }

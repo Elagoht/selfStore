@@ -1,8 +1,23 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common"
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards
+} from "@nestjs/common"
 import { ApplicationsService } from "./applications.service"
 import { CreateApplicationDto } from "./dto/create-application.dto"
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger"
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags
+} from "@nestjs/swagger"
 import { Application } from "./entities/application.entity"
+import { JwtAuthGuard } from "src/auth/jwt.guard"
 
 @ApiTags("Store")
 @Controller("store")
@@ -10,7 +25,10 @@ export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
   @Post("request")
-  @ApiOperation({ summary: "Create a new application request" })
+  @ApiOperation({
+    summary: "Create a new application request",
+    description: "Create a new application request"
+  })
   @ApiBody({ type: CreateApplicationDto })
   @ApiResponse({
     status: 201,
@@ -18,8 +36,16 @@ export class ApplicationsController {
     type: Application
   })
   @ApiResponse({ status: 400, description: "Bad Request." })
-  create(@Body() createApplicationDto: CreateApplicationDto) {
-    return this.applicationsService.create(createApplicationDto)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  create(
+    @Body() createApplicationDto: CreateApplicationDto,
+    @Request() request: AuthRequest
+  ) {
+    return this.applicationsService.create(
+      createApplicationDto,
+      request.user.id
+    )
   }
 
   @Get("applications")
