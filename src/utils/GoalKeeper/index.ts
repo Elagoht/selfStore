@@ -4,9 +4,13 @@ import {
   InternalServerErrorException
 } from "@nestjs/common"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
+import type Translator from "../Translator"
 
 class GoalKeeper {
-  public static async startShift(job: () => Promise<any>) {
+  public static async startShift(
+    job: () => Promise<any>,
+    translator: Translator
+  ) {
     try {
       return await job()
     } catch (error) {
@@ -14,9 +18,13 @@ class GoalKeeper {
         case error instanceof PrismaClientKnownRequestError:
           switch (error.code) {
             case "P2002":
-              throw new ConflictException("Conflict, resource already exists")
+              throw new ConflictException(
+                translator.translate("common.errors.conflict")
+              )
             case "P2007":
-              throw new BadRequestException("Bad Request, invalid data")
+              throw new BadRequestException(
+                translator.translate("common.errors.badRequest")
+              )
             default:
               throw new InternalServerErrorException("Internal Server Error")
           }

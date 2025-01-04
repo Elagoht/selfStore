@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   Param,
   Post,
   Request,
@@ -15,6 +16,7 @@ import {
   ApiTags
 } from "@nestjs/swagger"
 import { JwtAuthGuard } from "src/auth/jwt.guard"
+import Translator from "src/utils/Translator"
 import { ApplicationsService } from "./applications.service"
 import { CreateApplicationDto } from "./dto/create-application.dto"
 import { Application } from "./entities/application.entity"
@@ -35,17 +37,19 @@ export class ApplicationsController {
     description: "The application request has been received.",
     type: Application
   })
-  @ApiResponse({ status: 400, description: "Bad Request." })
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  create(
+  request(
     @Body() createApplicationDto: CreateApplicationDto,
-    @Request() request: AuthRequest
+    @Request() request: AuthRequest,
+    @Headers("accept-language") acceptLanguage: string
   ) {
-    return this.applicationsService.create(
+    const translator = new Translator(acceptLanguage)
+    return this.applicationsService.request(
       createApplicationDto,
       request.user.id,
-      request.user.approved
+      request.user.approved,
+      translator
     )
   }
 
@@ -56,8 +60,9 @@ export class ApplicationsController {
     description: "Return all applications.",
     type: [Application]
   })
-  findAll() {
-    return this.applicationsService.findAll()
+  findAll(@Headers("accept-language") acceptLanguage: string) {
+    const translator = new Translator(acceptLanguage)
+    return this.applicationsService.findAll(translator)
   }
 
   @Get("applications/:reverseDomain")
@@ -68,7 +73,14 @@ export class ApplicationsController {
     type: Application
   })
   @ApiResponse({ status: 404, description: "Application not found." })
-  findByReverseDomain(@Param("reverseDomain") reverseDomain: string) {
-    return this.applicationsService.findByReverseDomain(reverseDomain)
+  findByReverseDomain(
+    @Param("reverseDomain") reverseDomain: string,
+    @Headers("accept-language") acceptLanguage: string
+  ) {
+    const translator = new Translator(acceptLanguage)
+    return this.applicationsService.findByReverseDomain(
+      reverseDomain,
+      translator
+    )
   }
 }
