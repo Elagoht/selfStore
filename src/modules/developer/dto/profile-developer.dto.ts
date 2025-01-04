@@ -1,4 +1,4 @@
-import { IsEmail, IsUrl } from "class-validator"
+import { IsBoolean, IsEmail, IsUrl } from "class-validator"
 
 import { IsOptional, IsString, MaxLength, MinLength } from "class-validator"
 
@@ -55,4 +55,11 @@ export class ProfileDeveloperDto {
     nullable: true
   })
   bio: string
+
+  @IsBoolean()
+  @ApiProperty({
+    description: "Can the developer create applications",
+    example: true
+  })
+  approved: boolean
 }

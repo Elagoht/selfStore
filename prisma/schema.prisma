@@ -21,6 +21,7 @@ model Developer {
   realName      String?
   email         String    @unique
   passphrase    String
+  approved      Boolean   @default(false)
   gitProfileUrl String
   bio           String?
   websiteUrl    String?

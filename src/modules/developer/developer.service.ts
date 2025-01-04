@@ -72,7 +72,8 @@ export class DeveloperService {
       email: developer.email,
       gitProfileUrl: developer.gitProfileUrl,
       bio: developer.bio,
-      websiteUrl: developer.websiteUrl
+      websiteUrl: developer.websiteUrl,
+      approved: developer.approved
     }
   }
 

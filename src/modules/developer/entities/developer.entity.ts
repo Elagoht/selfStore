@@ -33,6 +33,12 @@ export class Developer {
   passphrase: string
 
   @ApiProperty({
+    description: "Can the developer create applications",
+    example: true
+  })
+  approved: boolean
+
+  @ApiProperty({
     description: "Git profile URL of the developer to provide confidence",
     example: "https://github.com/Elagoht"
   })
