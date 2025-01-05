@@ -4,7 +4,9 @@
       "unauthorized": "Yetkisiz erişim",
       "notFound": "Kaynak bulunamadı",
       "forbidden": "Bu kaynağa erişmek için yetkiniz yok",
-      "conflict": "Kaynak zaten mevcut"
+      "conflict": "Kaynak zaten mevcut",
+      "internal": "Dahili sunucu hatası",
+      "badRequest": "Geçersiz istek"
     }
   },
   "modules": {
@@ -17,7 +19,8 @@
     },
     "applications": {
       "errors": {
-        "forbidden": "Uygulama oluşturmak için onayınız yok"
+        "forbidden": "Uygulama oluşturmak için onayınız yok",
+        "conflict": "Uygulama zaten mevcut"
       }
     }
   }

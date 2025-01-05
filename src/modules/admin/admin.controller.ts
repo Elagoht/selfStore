@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Headers, Param, Patch } from "@nestjs/common"
+import { Body, Controller, Get, Param, Patch, Req } from "@nestjs/common"
 import { PublishStatus } from "@prisma/client"
+import { Request } from "express"
 import Translator from "src/utils/Translator"
 import { AdminService } from "./admin.service"
 
@@ -11,9 +12,9 @@ export class AdminController {
   changeApplicationPublishStatus(
     @Param("applicationId") applicationId: string,
     @Body() body: { publishStatus: PublishStatus },
-    @Headers("accept-language") acceptLanguage: string
+    @Req() request: Request
   ) {
-    const translator = new Translator(acceptLanguage)
+    const translator = new Translator(request.acceptLanguage)
     return this.adminService.changeApplicationPublishStatus(
       applicationId,
       body.publishStatus,
@@ -22,8 +23,8 @@ export class AdminController {
   }
 
   @Get("admin/applications")
-  getAllApplications(@Headers("accept-language") acceptLanguage: string) {
-    const translator = new Translator(acceptLanguage)
+  getAllApplications(@Req() request: Request) {
+    const translator = new Translator(request.acceptLanguage)
     return this.adminService.getAllApplications(translator)
   }
 }

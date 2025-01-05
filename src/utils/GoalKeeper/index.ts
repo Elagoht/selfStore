@@ -1,7 +1,8 @@
 import {
   BadRequestException,
   ConflictException,
-  InternalServerErrorException
+  InternalServerErrorException,
+  NotFoundException
 } from "@nestjs/common"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import type Translator from "../Translator"
@@ -25,13 +26,19 @@ class GoalKeeper {
               throw new BadRequestException(
                 translator.translate("common.errors.badRequest")
               )
+            case "P2023":
+              throw new NotFoundException(
+                translator.translate("common.errors.notFound")
+              )
             default:
-              throw new InternalServerErrorException("Internal Server Error")
+              throw new InternalServerErrorException(
+                translator.translate("common.errors.internal")
+              )
           }
-        case error instanceof Error:
-          throw error
         default:
-          throw new InternalServerErrorException("Internal Server Error")
+          throw new InternalServerErrorException(
+            translator.translate("common.errors.internal")
+          )
       }
     }
   }

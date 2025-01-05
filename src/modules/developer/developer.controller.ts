@@ -2,13 +2,13 @@ import {
   Body,
   Controller,
   Get,
-  Headers,
   HttpCode,
   Post,
   Request,
   UseGuards
 } from "@nestjs/common"
 import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger"
+import { AcceptLanguage } from "src/decorators/accept-language.decorator"
 import Translator from "src/utils/Translator"
 import { JwtAuthGuard } from "../../auth/jwt.guard"
 import { DeveloperService } from "./developer.service"
@@ -24,9 +24,9 @@ export class DeveloperController {
   @Post("register")
   register(
     @Body() createDeveloperDto: RegisterDeveloperDto,
-    @Request() request: Request
+    @AcceptLanguage() acceptLanguage: string
   ) {
-    const translator = new Translator(request.headers.get("accept-language"))
+    const translator = new Translator(acceptLanguage)
 
     return this.developerService.register(createDeveloperDto, translator)
   }
@@ -44,7 +44,7 @@ export class DeveloperController {
   @HttpCode(200)
   login(
     @Body() loginDeveloperDto: LoginDeveloperDto,
-    @Headers("accept-language") acceptLanguage: string
+    @AcceptLanguage() acceptLanguage: string
   ) {
     const translator = new Translator(acceptLanguage)
 
@@ -70,7 +70,7 @@ export class DeveloperController {
   })
   profile(
     @Request() request: AuthRequest,
-    @Headers("accept-language") acceptLanguage: string
+    @AcceptLanguage() acceptLanguage: string
   ) {
     const translator = new Translator(acceptLanguage)
 

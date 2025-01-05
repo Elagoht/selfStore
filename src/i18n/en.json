@@ -4,7 +4,9 @@
       "unauthorized": "Unauthorized access",
       "notFound": "Resource not found",
       "forbidden": "You are not allowed to access this resource",
-      "conflict": "Resource already exists"
+      "conflict": "Resource already exists",
+      "internal": "Internal Server Error",
+      "badRequest": "Invalid request"
     }
   },
   "modules": {
@@ -17,7 +19,8 @@
     },
     "applications": {
       "errors": {
-        "forbidden": "You are not approved to create applications"
+        "forbidden": "You are not approved to create applications",
+        "conflict": "Application already exists"
       }
     }
   }

@@ -1,4 +1,4 @@
-type AuthRequest = Request & {
+type AuthRequest = Express.Request & {
   user: {
     id: string
     username: string
