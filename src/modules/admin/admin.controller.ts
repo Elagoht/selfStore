@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Req } from "@nestjs/common"
+import { ApiResponse } from "@nestjs/swagger"
 import { PublishStatus } from "@prisma/client"
 import Translator from "src/utils/Translator"
 import { AdminService } from "./admin.service"
@@ -23,18 +24,32 @@ export class AdminController {
     )
   }
 
-  @Patch("developers/:developerId/status")
-  changeDeveloperStatus(
+  @Patch("developers/:developerId/approve")
+  @ApiResponse({
+    status: 200,
+    description: "Developer approved successfully",
+    type: StatusDeveloperDto
+  })
+  approveDeveloper(
     @Param("developerId") developerId: string,
-    @Body() body: StatusDeveloperDto,
     @Req() request: NestRequest
   ) {
     const translator = new Translator(request.acceptLanguage)
-    return this.adminService.changeDeveloperStatus(
-      developerId,
-      body.approved,
-      translator
-    )
+    return this.adminService.approveDeveloper(developerId, translator)
+  }
+
+  @Patch("developers/:developerId/reject")
+  @ApiResponse({
+    status: 200,
+    description: "Developer rejected successfully",
+    type: StatusDeveloperDto
+  })
+  rejectDeveloper(
+    @Param("developerId") developerId: string,
+    @Req() request: NestRequest
+  ) {
+    const translator = new Translator(request.acceptLanguage)
+    return this.adminService.rejectDeveloper(developerId, translator)
   }
 
   @Get("admin/applications")

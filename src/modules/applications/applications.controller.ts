@@ -45,7 +45,7 @@ export class ApplicationsController {
     const translator = new Translator(request.acceptLanguage)
     return this.applicationsService.request(
       createApplicationDto,
-      request.user.id,
+      request.user.sub,
       request.user.approved,
       translator
     )

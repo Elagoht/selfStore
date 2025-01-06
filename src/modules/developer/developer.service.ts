@@ -93,8 +93,7 @@ export class DeveloperService {
 
   private generateToken(developer: Developer) {
     const payload = {
-      id: developer.id,
-      email: developer.email,
+      sub: developer.id,
       username: developer.username,
       approved: developer.approved
     }

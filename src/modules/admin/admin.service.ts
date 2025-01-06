@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 
 @Injectable()
 export class AdminService {
-  changeApplicationPublishStatus(
+  public changeApplicationPublishStatus(
     applicationId: string,
     publishStatus: PublishStatus,
     translator: Translator
@@ -20,26 +20,39 @@ export class AdminService {
     }, translator)
   }
 
-  changeDeveloperStatus(
-    developerId: string,
-    approved: boolean,
-    translator: Translator
-  ) {
-    return GoalKeeper.startShift(() => {
-      return prisma.developer.update({
-        where: { id: developerId },
-        data: { approved }
-      })
-    }, translator)
-  }
-
-  getAllApplications(translator: Translator) {
+  public getAllApplications(translator: Translator) {
     return GoalKeeper.startShift(() => {
       return prisma.application.findMany({
         where: {
           deletedAt: null
         }
       })
+    }, translator)
+  }
+
+  public approveDeveloper(developerId: string, translator: Translator) {
+    return this.changeDeveloperStatus(developerId, true, translator)
+  }
+
+  public rejectDeveloper(developerId: string, translator: Translator) {
+    return this.changeDeveloperStatus(developerId, false, translator)
+  }
+
+  private changeDeveloperStatus(
+    developerId: string,
+    approved: boolean,
+    translator: Translator
+  ) {
+    return GoalKeeper.startShift(async () => {
+      const developer = await prisma.developer.update({
+        where: { id: developerId },
+        data: { approved }
+      })
+
+      return {
+        id: developer.id,
+        approved: developer.approved
+      }
     }, translator)
   }
 }

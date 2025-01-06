@@ -4,9 +4,8 @@ interface NestRequest extends Express.Request {
 
 interface AuthRequest extends NestRequest {
   user: {
-    id: string
+    sub: string
     username: string
-    email: string
     approved: boolean
   }
 }
