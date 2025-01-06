@@ -91,11 +91,17 @@ export class DeveloperService {
     }
   }
 
+  public static async isApproved(username: string) {
+    const developer = await prisma.developer.findUnique({
+      where: { username }
+    })
+    return developer?.approved
+  }
+
   private generateToken(developer: Developer) {
     const payload = {
       sub: developer.id,
-      username: developer.username,
-      approved: developer.approved
+      username: developer.username
     }
     return this.jwtService.sign(payload)
   }

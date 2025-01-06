@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from "@nestjs/common"
 import { PrismaClient, PublishStatus } from "@prisma/client"
 import GoalKeeper from "src/utils/GoalKeeper"
 import type Translator from "src/utils/Translator"
+import { DeveloperService } from "../developer/developer.service"
 import { CreateApplicationDto } from "./dto/create-application.dto"
 
 const prisma = new PrismaClient()
@@ -11,11 +12,10 @@ export class ApplicationsService {
   async request(
     createApplicationDto: CreateApplicationDto,
     developerId: string,
-    approved: boolean,
     translator: Translator
   ) {
     return await GoalKeeper.startShift(() => {
-      if (!approved) {
+      if (!DeveloperService.isApproved(developerId)) {
         throw new ForbiddenException(
           translator.translate("modules.applications.errors.forbidden")
         )

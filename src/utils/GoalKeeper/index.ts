@@ -18,7 +18,6 @@ class GoalKeeper {
       return await job()
     } catch (error) {
       Printer.error(error)
-
       switch (true) {
         // Prisma error translation
         case error instanceof PrismaClientKnownRequestError:

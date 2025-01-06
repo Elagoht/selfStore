@@ -6,6 +6,5 @@ interface AuthRequest extends NestRequest {
   user: {
     sub: string
     username: string
-    approved: boolean
   }
 }

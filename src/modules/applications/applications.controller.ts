@@ -46,7 +46,6 @@ export class ApplicationsController {
     return this.applicationsService.request(
       createApplicationDto,
       request.user.sub,
-      request.user.approved,
       translator
     )
   }

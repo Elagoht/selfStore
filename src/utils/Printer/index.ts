@@ -1,22 +1,22 @@
 class Printer {
   public static info(message: string) {
-    this.print(message, "blue")
+    this.print(`[INFO]: ${message}`, "blue")
   }
 
   public static success(message: string) {
-    this.print(message, "green")
+    this.print(`[SUCCESS]: ${message}`, "green")
   }
 
   public static error(message: string) {
-    this.print(message, "red")
+    this.print(`[ERROR]: ${message}`, "red")
   }
 
   public static warn(message: string) {
-    this.print(message, "yellow")
+    this.print(`[WARN]: ${message}`, "yellow")
   }
 
   public static debug(message: string) {
-    this.print(message, "magenta")
+    this.print(`[DEBUG]: ${message}`, "magenta")
   }
 
   private static readonly colors = {
