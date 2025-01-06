@@ -20,6 +20,19 @@ export class AdminService {
     }, translator)
   }
 
+  changeDeveloperStatus(
+    developerId: string,
+    approved: boolean,
+    translator: Translator
+  ) {
+    return GoalKeeper.startShift(() => {
+      return prisma.developer.update({
+        where: { id: developerId },
+        data: { approved }
+      })
+    }, translator)
+  }
+
   getAllApplications(translator: Translator) {
     return GoalKeeper.startShift(() => {
       return prisma.application.findMany({
