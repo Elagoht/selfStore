@@ -1,10 +1,12 @@
 import {
   BadRequestException,
   ConflictException,
+  HttpException,
   InternalServerErrorException,
   NotFoundException
 } from "@nestjs/common"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
+import Printer from "../Printer"
 import type Translator from "../Translator"
 
 class GoalKeeper {
@@ -15,7 +17,10 @@ class GoalKeeper {
     try {
       return await job()
     } catch (error) {
+      Printer.error(error)
+
       switch (true) {
+        // Prisma error translation
         case error instanceof PrismaClientKnownRequestError:
           switch (error.code) {
             case "P2002":
@@ -35,6 +40,10 @@ class GoalKeeper {
                 translator.translate("common.errors.internal")
               )
           }
+        // Allow manually thrown exceptions
+        case error instanceof HttpException:
+          throw error
+        // Unhandled exceptions
         default:
           throw new InternalServerErrorException(
             translator.translate("common.errors.internal")
