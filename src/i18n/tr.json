@@ -2,9 +2,9 @@
   "common": {
     "errors": {
       "unauthorized": "Yetkisiz erişim",
-      "notFound": "Kaynak bulunamadı",
-      "forbidden": "Bu kaynağa erişmek için yetkiniz yok",
-      "conflict": "Kaynak zaten mevcut",
+      "notFound": "Bulunamadı",
+      "forbidden": "Erişim reddedildi",
+      "conflict": "Zaten mevcut",
       "internal": "Dahili sunucu hatası",
       "badRequest": "Geçersiz istek"
     }

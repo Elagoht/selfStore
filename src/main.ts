@@ -7,6 +7,8 @@ import { AppModule } from "./modules/app/app.module"
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
+  app.getHttpAdapter().getInstance().disable("x-powered-by")
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -15,21 +17,25 @@ async function bootstrap() {
   )
 
   const config = new DocumentBuilder()
-    .setTitle("Your API Title")
-    .setDescription("Your API Description")
+    .setTitle("SelfStore API")
+    .setDescription("SelfStore API Documentation")
     .setVersion("1.0")
     .addBearerAuth()
+    .addGlobalParameters({
+      name: "accept-language",
+      description: "Language code (e.g., en-US, tr-TR)",
+      required: false,
+      schema: {
+        default: "en-US",
+        enum: ["en-US", "tr-TR"],
+        type: "string"
+      },
+      in: "header"
+    })
     .build()
 
   const document = SwaggerModule.createDocument(app, config)
-  SwaggerModule.setup("api", app, document)
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true
-    })
-  )
+  SwaggerModule.setup("swagger", app, document)
 
   app.useGlobalInterceptors(new LanguageInterceptor())
 

@@ -4,11 +4,10 @@ import {
   Get,
   HttpCode,
   Post,
-  Request,
+  Req,
   UseGuards
 } from "@nestjs/common"
 import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger"
-import { AcceptLanguage } from "src/decorators/accept-language.decorator"
 import Translator from "src/utils/Translator"
 import { JwtAuthGuard } from "../../auth/jwt.guard"
 import { DeveloperService } from "./developer.service"
@@ -24,9 +23,9 @@ export class DeveloperController {
   @Post("register")
   register(
     @Body() createDeveloperDto: RegisterDeveloperDto,
-    @AcceptLanguage() acceptLanguage: string
+    @Req() request: NestRequest
   ) {
-    const translator = new Translator(acceptLanguage)
+    const translator = new Translator(request.acceptLanguage)
 
     return this.developerService.register(createDeveloperDto, translator)
   }
@@ -44,9 +43,9 @@ export class DeveloperController {
   @HttpCode(200)
   login(
     @Body() loginDeveloperDto: LoginDeveloperDto,
-    @AcceptLanguage() acceptLanguage: string
+    @Req() request: NestRequest
   ) {
-    const translator = new Translator(acceptLanguage)
+    const translator = new Translator(request.acceptLanguage)
 
     return this.developerService.login(loginDeveloperDto, translator)
   }
@@ -68,11 +67,8 @@ export class DeveloperController {
     status: 401,
     description: "Unauthorized"
   })
-  profile(
-    @Request() request: AuthRequest,
-    @AcceptLanguage() acceptLanguage: string
-  ) {
-    const translator = new Translator(acceptLanguage)
+  profile(@Req() request: AuthRequest) {
+    const translator = new Translator(request.acceptLanguage)
 
     return this.developerService.getProfile(request.user.username, translator)
   }

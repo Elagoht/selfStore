@@ -14,7 +14,6 @@ import {
   ApiResponse,
   ApiTags
 } from "@nestjs/swagger"
-import { Request } from "express"
 import { JwtAuthGuard } from "src/auth/jwt.guard"
 import Translator from "src/utils/Translator"
 import { ApplicationsService } from "./applications.service"
@@ -59,7 +58,7 @@ export class ApplicationsController {
     description: "Return all applications.",
     type: [Application]
   })
-  findAll(@Req() request: Request) {
+  findAll(@Req() request: NestRequest) {
     const translator = new Translator(request.acceptLanguage)
     return this.applicationsService.findAll(translator)
   }
@@ -74,7 +73,7 @@ export class ApplicationsController {
   @ApiResponse({ status: 404, description: "Application not found." })
   findByReverseDomain(
     @Param("reverseDomain") reverseDomain: string,
-    @Req() request: Request
+    @Req() request: NestRequest
   ) {
     const translator = new Translator(request.acceptLanguage)
     return this.applicationsService.findByReverseDomain(
