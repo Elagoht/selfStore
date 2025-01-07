@@ -1,8 +1,13 @@
-import { IsBoolean, IsEmail, IsUrl } from "class-validator"
-
-import { IsOptional, IsString, MaxLength, MinLength } from "class-validator"
-
 import { ApiProperty } from "@nestjs/swagger"
+import {
+  IsBoolean,
+  IsEmail,
+  IsOptional,
+  IsString,
+  IsUrl,
+  MaxLength,
+  MinLength
+} from "class-validator"
 
 export class ProfileDeveloperDto {
   @IsString()
@@ -16,6 +21,7 @@ export class ProfileDeveloperDto {
 
   @IsString()
   @IsOptional()
+  @MaxLength(50)
   @ApiProperty({
     description: "Real name of the developer if they want to be displayed",
     example: "Furkan",
