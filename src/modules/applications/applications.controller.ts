@@ -57,9 +57,8 @@ export class ApplicationsController {
     description: "Return all applications.",
     type: [Application]
   })
-  findAll(@Req() request: NestRequest) {
-    const translator = new Translator(request.acceptLanguage)
-    return this.applicationsService.findAll(translator)
+  findAll() {
+    return this.applicationsService.findAll()
   }
 
   @Get("applications/:reverseDomain")
@@ -70,14 +69,7 @@ export class ApplicationsController {
     type: Application
   })
   @ApiResponse({ status: 404, description: "Application not found." })
-  findByReverseDomain(
-    @Param("reverseDomain") reverseDomain: string,
-    @Req() request: NestRequest
-  ) {
-    const translator = new Translator(request.acceptLanguage)
-    return this.applicationsService.findByReverseDomain(
-      reverseDomain,
-      translator
-    )
+  findByReverseDomain(@Param("reverseDomain") reverseDomain: string) {
+    return this.applicationsService.findByReverseDomain(reverseDomain)
   }
 }

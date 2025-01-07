@@ -3,6 +3,7 @@ import { NestFactory } from "@nestjs/core"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
 import { LanguageInterceptor } from "./interceptors/language.interceptor"
 import { AppModule } from "./modules/app/app.module"
+import { GoalKeeperPipe } from "./pipes/goalkeeper.pipe"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -15,7 +16,8 @@ async function bootstrap() {
       transform: true,
       forbidNonWhitelisted: true,
       validateCustomDecorators: true
-    })
+    }),
+    new GoalKeeperPipe()
   )
 
   const config = new DocumentBuilder()

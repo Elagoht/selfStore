@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, Patch, Req } from "@nestjs/common"
+import { Body, Controller, Get, Param, Patch } from "@nestjs/common"
 import { ApiResponse } from "@nestjs/swagger"
 import { PublishStatus } from "@prisma/client"
-import Translator from "src/utils/Translator"
 import { AdminService } from "./admin.service"
 import { StatusApplicationDto } from "./dto/status-application.dto"
 import { StatusDeveloperDto } from "./dto/status-developer.dto"
@@ -13,14 +12,11 @@ export class AdminController {
   @Patch("applications/:applicationId/status")
   changeApplicationPublishStatus(
     @Param("applicationId") applicationId: string,
-    @Body() body: StatusApplicationDto,
-    @Req() request: NestRequest
+    @Body() body: StatusApplicationDto
   ) {
-    const translator = new Translator(request.acceptLanguage)
     return this.adminService.changeApplicationPublishStatus(
       applicationId,
-      body.publishStatus.toUpperCase() as PublishStatus,
-      translator
+      body.publishStatus.toUpperCase() as PublishStatus
     )
   }
 
@@ -30,12 +26,8 @@ export class AdminController {
     description: "Developer approved successfully",
     type: StatusDeveloperDto
   })
-  approveDeveloper(
-    @Param("developerId") developerId: string,
-    @Req() request: NestRequest
-  ) {
-    const translator = new Translator(request.acceptLanguage)
-    return this.adminService.approveDeveloper(developerId, translator)
+  approveDeveloper(@Param("developerId") developerId: string) {
+    return this.adminService.approveDeveloper(developerId)
   }
 
   @Patch("developers/:developerId/reject")
@@ -44,17 +36,12 @@ export class AdminController {
     description: "Developer rejected successfully",
     type: StatusDeveloperDto
   })
-  rejectDeveloper(
-    @Param("developerId") developerId: string,
-    @Req() request: NestRequest
-  ) {
-    const translator = new Translator(request.acceptLanguage)
-    return this.adminService.rejectDeveloper(developerId, translator)
+  rejectDeveloper(@Param("developerId") developerId: string) {
+    return this.adminService.rejectDeveloper(developerId)
   }
 
   @Get("admin/applications")
-  getAllApplications(@Req() request: NestRequest) {
-    const translator = new Translator(request.acceptLanguage)
-    return this.adminService.getAllApplications(translator)
+  getAllApplications() {
+    return this.adminService.getAllApplications()
   }
 }

@@ -1,6 +1,5 @@
 import { ForbiddenException, Injectable } from "@nestjs/common"
 import { PrismaClient, PublishStatus } from "@prisma/client"
-import GoalKeeper from "src/utils/GoalKeeper"
 import type Translator from "src/utils/Translator"
 import { DeveloperService } from "../developer/developer.service"
 import { CreateApplicationDto } from "./dto/create-application.dto"
@@ -9,45 +8,39 @@ const prisma = new PrismaClient()
 
 @Injectable()
 export class ApplicationsService {
-  async request(
+  request(
     createApplicationDto: CreateApplicationDto,
     developerId: string,
     translator: Translator
   ) {
-    return await GoalKeeper.startShift(() => {
-      if (!DeveloperService.isApproved(developerId)) {
-        throw new ForbiddenException(
-          translator.translate("modules.applications.errors.forbidden")
-        )
+    if (!DeveloperService.isApproved(developerId)) {
+      throw new ForbiddenException(
+        translator.translate("modules.applications.errors.forbidden")
+      )
+    }
+
+    return prisma.application.create({
+      data: {
+        ...createApplicationDto,
+        publishStatus: PublishStatus.REQUESTED,
+        permissions: [],
+        developerId: developerId
       }
-
-      return prisma.application.create({
-        data: {
-          ...createApplicationDto,
-          publishStatus: PublishStatus.REQUESTED,
-          permissions: [],
-          developerId: developerId
-        }
-      })
-    }, translator)
+    })
   }
 
-  findAll(translator: Translator) {
-    return GoalKeeper.startShift(() => {
-      return prisma.application.findMany({
-        where: {
-          deletedAt: null,
-          publishStatus: PublishStatus.PUBLISHED
-        }
-      })
-    }, translator)
+  findAll() {
+    return prisma.application.findMany({
+      where: {
+        deletedAt: null,
+        publishStatus: PublishStatus.PUBLISHED
+      }
+    })
   }
 
-  findByReverseDomain(reverseDomain: string, translator: Translator) {
-    return GoalKeeper.startShift(() => {
-      return prisma.application.findUnique({
-        where: { reverseDomain }
-      })
-    }, translator)
+  findByReverseDomain(reverseDomain: string) {
+    return prisma.application.findUnique({
+      where: { reverseDomain }
+    })
   }
 }

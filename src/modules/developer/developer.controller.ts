@@ -21,13 +21,8 @@ export class DeveloperController {
   constructor(private readonly developerService: DeveloperService) {}
 
   @Post("register")
-  register(
-    @Body() createDeveloperDto: RegisterDeveloperDto,
-    @Req() request: NestRequest
-  ) {
-    const translator = new Translator(request.acceptLanguage)
-
-    return this.developerService.register(createDeveloperDto, translator)
+  register(@Body() createDeveloperDto: RegisterDeveloperDto) {
+    return this.developerService.register(createDeveloperDto)
   }
 
   @Post("login")

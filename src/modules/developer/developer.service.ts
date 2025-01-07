@@ -6,7 +6,6 @@ import {
 import { JwtService } from "@nestjs/jwt"
 import { Developer, PrismaClient } from "@prisma/client"
 import { compare, genSalt, hash } from "bcrypt"
-import GoalKeeper from "src/utils/GoalKeeper"
 import type Translator from "src/utils/Translator"
 import { LoginDeveloperDto } from "./dto/login-developer.dto"
 import { RegisterDeveloperDto } from "./dto/register-developer.dto"
@@ -17,29 +16,24 @@ const prisma = new PrismaClient()
 export class DeveloperService {
   constructor(private jwtService: JwtService) {}
 
-  async register(
-    createDeveloperDto: RegisterDeveloperDto,
-    translator: Translator
-  ) {
-    return await GoalKeeper.startShift(async () => {
-      const salt = await genSalt(10)
-      const hashedPassphrase = await hash(createDeveloperDto.passphrase, salt)
+  async register(createDeveloperDto: RegisterDeveloperDto) {
+    const salt = await genSalt(10)
+    const hashedPassphrase = await hash(createDeveloperDto.passphrase, salt)
 
-      const developer = await prisma.developer.create({
-        data: {
-          username: createDeveloperDto.username,
-          email: createDeveloperDto.email,
-          passphrase: hashedPassphrase,
-          gitProfileUrl: createDeveloperDto.gitProfileUrl,
-          bio: createDeveloperDto.bio,
-          websiteUrl: createDeveloperDto.websiteUrl,
-          realName: createDeveloperDto.realName
-        }
-      })
+    const developer = await prisma.developer.create({
+      data: {
+        username: createDeveloperDto.username,
+        email: createDeveloperDto.email,
+        passphrase: hashedPassphrase,
+        gitProfileUrl: createDeveloperDto.gitProfileUrl,
+        bio: createDeveloperDto.bio,
+        websiteUrl: createDeveloperDto.websiteUrl,
+        realName: createDeveloperDto.realName
+      }
+    })
 
-      const token = this.generateToken(developer)
-      return { token }
-    }, translator)
+    const token = this.generateToken(developer)
+    return { token }
   }
 
   async login(loginDeveloperDto: LoginDeveloperDto, translator: Translator) {

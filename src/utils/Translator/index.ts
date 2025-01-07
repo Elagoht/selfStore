@@ -10,6 +10,8 @@ import { parse } from "accept-language-parser"
 
 class Translator {
   public locale: Locale
+  public static readonly LOCALES: Locale[] = ["en", "tr"]
+  public static readonly FALLBACK_LOCALE: Locale = "en"
 
   public constructor(acceptedLanguage: string | null) {
     this.locale = Translator.determineLanguage(acceptedLanguage)
@@ -55,10 +57,6 @@ class Translator {
   private static getDictionary(locale: Locale) {
     return Translator.DICTIONARIES[locale]
   }
-
-  private static readonly LOCALES: Locale[] = ["en", "tr"]
-
-  private static readonly FALLBACK_LOCALE: Locale = "en"
 
   private static readonly DICTIONARIES: Record<Locale, Dictionary> = {
     en,
