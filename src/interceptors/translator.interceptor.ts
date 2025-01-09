@@ -27,7 +27,7 @@ export class TranslatorInterceptor implements NestInterceptor {
 
           const message =
             typeof response.message === "string"
-              ? translator.translate(response.message)
+              ? [translator.translate(response.message)]
               : response.message.map((message) => translator.translate(message))
 
           throw new HttpException(
