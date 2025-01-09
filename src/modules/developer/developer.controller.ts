@@ -8,7 +8,7 @@ import {
   UseGuards
 } from "@nestjs/common"
 import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger"
-import { JwtAuthGuard } from "../../auth/jwt.guard"
+import { JwtAuthGuard } from "../../guards/jwt.guard"
 import { DeveloperService } from "./developer.service"
 import { LoginDeveloperDto } from "./dto/login-developer.dto"
 import { LoginResponseDto } from "./dto/login-response.dto"

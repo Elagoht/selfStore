@@ -14,7 +14,7 @@ import {
   ApiResponse,
   ApiTags
 } from "@nestjs/swagger"
-import { JwtAuthGuard } from "src/auth/jwt.guard"
+import { JwtAuthGuard } from "src/guards/jwt.guard"
 import { ApplicationsService } from "./applications.service"
 import { CreateApplicationDto } from "./dto/create-application.dto"
 import { Application } from "./entities/application.entity"
