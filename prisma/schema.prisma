@@ -16,7 +16,7 @@ model Admin {
 }
 
 model Developer {
-  id            String    @id @default(uuid())
+  id            String    @id @unique @default(uuid())
   username      String    @unique
   realName      String?
   email         String    @unique
