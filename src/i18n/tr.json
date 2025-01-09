@@ -1,27 +1,26 @@
 {
-  "common": {
-    "errors": {
-      "unauthorized": "Yetkisiz erişim",
-      "notFound": "Bulunamadı",
-      "forbidden": "Erişim reddedildi",
-      "conflict": "Zaten mevcut",
-      "internal": "Dahili sunucu hatası",
-      "badRequest": "Geçersiz istek"
+  "errors": {
+    "unauthorized": "Yetkisiz erişim",
+    "notFound": "Bulunamadı",
+    "forbidden": "Erişim reddedildi",
+    "conflict": "Zaten mevcut",
+    "internal": "Dahili sunucu hatası",
+    "badRequest": "Geçersiz istek",
+    "generics": {
+      "notFound": "{{entity}} bulunamadı",
+      "alreadyExists": "{{entity}} zaten mevcut"
     }
   },
-  "modules": {
-    "developer": {
-      "errors": {
-        "authentication": "Geçersiz kimlik bilgileri",
-        "conflict": "Geliştirici zaten mevcut",
-        "notFound": "Geliştirici bulunamadı"
-      }
-    },
-    "applications": {
-      "errors": {
-        "forbidden": "Uygulama oluşturmak için onayınız yok",
-        "conflict": "Uygulama zaten mevcut"
-      }
+  "validations": {
+    "email": "{{field}}: Geçersiz email adresi",
+    "url": "{{field}}: Geçersiz URL",
+    "common": "{{field}}: Geçersiz",
+    "license": "{{field}}: Geçersiz lisans",
+    "reverseDomain": "{{field}}: Geçersiz ters alan adı",
+    "generic": {
+      "min": "{{field}}: en az {{min}} karakter olmalıdır",
+      "max": "{{field}}: en fazla {{max}} karakter olmalıdır",
+      "required": "{{field}}: gereklidir"
     }
   }
 }

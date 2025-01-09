@@ -1,27 +1,26 @@
 {
-  "common": {
-    "errors": {
-      "unauthorized": "Unauthorized access",
-      "notFound": "Not found",
-      "forbidden": "You are not allowed to access",
-      "conflict": "Already exists",
-      "internal": "Internal server error",
-      "badRequest": "Invalid request"
+  "errors": {
+    "unauthorized": "Unauthorized access",
+    "notFound": "Not found",
+    "forbidden": "Access denied",
+    "conflict": "Already exists",
+    "internal": "Internal server error",
+    "badRequest": "Invalid request",
+    "generics": {
+      "notFound": "{{entity}} not found",
+      "alreadyExists": "{{entity}} already exists"
     }
   },
-  "modules": {
-    "developer": {
-      "errors": {
-        "authentication": "Invalid credentials",
-        "conflict": "Developer already exists",
-        "notFound": "Developer not found"
-      }
-    },
-    "applications": {
-      "errors": {
-        "forbidden": "You are not approved to create applications",
-        "conflict": "Application already exists"
-      }
+  "validations": {
+    "email": "{{field}}: Invalid email address",
+    "url": "{{field}}: Invalid URL",
+    "license": "{{field}}: Invalid license",
+    "reverseDomain": "{{field}}: Invalid reverse domain",
+    "common": "{{field}}: Invalid",
+    "generic": {
+      "min": "{{field}}: must be at least {{min}} characters",
+      "max": "{{field}}: must be at most {{max}} characters",
+      "required": "{{field}}: is required"
     }
   }
 }
