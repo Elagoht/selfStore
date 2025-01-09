@@ -1,22 +1,22 @@
 /* eslint-disable no-console */
 
 class Printer {
-  public static info(message: string) {
+  public static info(message: any) {
     this.print("[INFO]: ", "blue")
     console.log(message)
   }
 
-  public static success(message: string) {
+  public static success(message: any) {
     this.print("[SUCCESS]: ", "green")
     console.log(message)
   }
 
-  public static error(message: string) {
+  public static error(message: any) {
     this.print("[ERROR]: ", "red")
     console.error(message)
   }
 
-  public static warn(message: string) {
+  public static warn(message: any) {
     this.print("[WARN]: ", "yellow")
     console.warn(message)
   }
@@ -35,7 +35,7 @@ class Printer {
     reset: "\x1b[0m"
   }
 
-  private static print(message: string, color: keyof typeof this.colors) {
+  private static print(message: any, color: keyof typeof this.colors) {
     process.stdout.write(
       `${this.colors[color]}[${new Date().toISOString()}]-${
         message

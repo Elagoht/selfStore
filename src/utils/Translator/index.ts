@@ -42,7 +42,7 @@ class Translator {
       if (obj && typeof obj === "object" && key in obj) {
         return obj[key]
       }
-      return key
+      return pattern
     }, dictionary)
 
     return modifier ? Translator.modify(message, modifier) : message

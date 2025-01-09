@@ -22,5 +22,11 @@
       "max": "{{field}}: en fazla {{max}} karakter olmalıdır",
       "required": "{{field}}: gereklidir"
     }
+  },
+  "developers": {
+    "invalidCredentials": "Geçersiz kimlik bilgileri"
+  },
+  "applications": {
+    "forbidden": "Uygulama talebi yapmak için henüz onaylanmadınız."
   }
 }

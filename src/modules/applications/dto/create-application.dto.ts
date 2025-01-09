@@ -24,7 +24,7 @@ export class CreateApplicationDto {
   @MaxLength(100, {
     message: "validations.generic.max|max=100,field=reverseDomain"
   })
-  @Matches(/^[a-z0-9]+\.[a-z0-9]+\.[a-z0-9]+$/, {
+  @Matches(/^[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]+$/, {
     message: "validations.reverseDomain|field=reverseDomain"
   })
   @ApiProperty({
@@ -51,6 +51,7 @@ export class CreateApplicationDto {
   dockerImageName: string
 
   @IsString({ message: "validations.common|field=dockerImageTag" })
+  @IsOptional()
   @MaxLength(100, {
     message: "validations.generic.max|max=100,field=dockerImageTag"
   })
@@ -58,6 +59,7 @@ export class CreateApplicationDto {
   dockerImageTag: string
 
   @IsUrl({}, { message: "validations.url|field=dockerRegistryUrl" })
+  @IsOptional()
   @ApiProperty({
     description: "Docker registry URL, defaults to Docker Hub",
     required: false,

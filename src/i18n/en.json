@@ -22,5 +22,11 @@
       "max": "{{field}}: must be at most {{max}} characters",
       "required": "{{field}}: is required"
     }
+  },
+  "developers": {
+    "invalidCredentials": "Invalid credentials"
+  },
+  "applications": {
+    "forbidden": "You are not authorized to request an application"
   }
 }

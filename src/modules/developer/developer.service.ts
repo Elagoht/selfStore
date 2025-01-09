@@ -3,7 +3,7 @@ import { JwtService } from "@nestjs/jwt"
 import { Developer, PrismaClient } from "@prisma/client"
 import { compare, genSalt, hash } from "bcrypt"
 import {
-  NotFoundException,
+  ForbiddenException,
   UnauthorizedException
 } from "../../errors/exceptions"
 import { LoginDeveloperDto } from "./dto/login-developer.dto"
@@ -42,14 +42,16 @@ export class DeveloperService {
       }
     })
 
-    if (!developer) throw new NotFoundException("errors.badRequest")
+    if (!developer)
+      throw new UnauthorizedException("developers.invalidCredentials")
 
     const isPasswordValid = await compare(
       loginDeveloperDto.passphrase,
       developer.passphrase
     )
 
-    if (!isPasswordValid) throw new UnauthorizedException("errors.unauthorized")
+    if (!isPasswordValid)
+      throw new UnauthorizedException("developers.invalidCredentials")
 
     const token = this.generateToken(developer)
 
@@ -61,7 +63,7 @@ export class DeveloperService {
       where: { id }
     })
 
-    if (!developer) throw new NotFoundException("errors.notFound")
+    if (!developer) throw new ForbiddenException("errors.forbidden")
 
     return {
       realName: developer.realName,
@@ -74,9 +76,9 @@ export class DeveloperService {
     }
   }
 
-  public static async isApproved(username: string) {
+  public static async isApproved(id: string) {
     const developer = await prisma.developer.findUnique({
-      where: { username }
+      where: { id }
     })
     return developer?.approved
   }
