@@ -3,7 +3,9 @@ import { PublishStatus } from "@prisma/client"
 import { IsEnum } from "class-validator"
 
 export class StatusApplicationDto {
-  @IsEnum(PublishStatus)
+  @IsEnum(PublishStatus, {
+    message: "validations.common|field=publishStatus"
+  })
   @ApiProperty({
     description: "The status of the application",
     enum: PublishStatus,
