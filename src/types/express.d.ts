@@ -1,8 +1,4 @@
-interface NestRequest extends Express.Request {
-  acceptLanguage: string
-}
-
-interface AuthRequest extends NestRequest {
+interface AuthRequest extends Express.Request {
   user: {
     sub: string
     username: string
