@@ -26,9 +26,8 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     const translator = new Translator(acceptLanguage)
 
     if (error || !user) {
-      const message = translator.translate("errors.unauthorized")
       throw new UnauthorizedException({
-        message,
+        messages: [translator.translate("errors.unauthorized")],
         status: HttpStatus.UNAUTHORIZED
       })
     }

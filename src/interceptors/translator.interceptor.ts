@@ -25,13 +25,13 @@ export class TranslatorInterceptor implements NestInterceptor {
           const status = error.getStatus()
           const response = error.getResponse() as { message: string | string[] }
 
-          const message =
+          const messages =
             typeof response.message === "string"
               ? [translator.translate(response.message)]
               : response.message.map((message) => translator.translate(message))
 
           throw new HttpException(
-            { message, status },
+            { messages, status },
             status || HttpStatus.INTERNAL_SERVER_ERROR
           )
         }

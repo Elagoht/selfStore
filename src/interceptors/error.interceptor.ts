@@ -23,7 +23,7 @@ export class ErrorInterceptor implements NestInterceptor {
             Printer.warn("This is an unhandled error!")
             Printer.error(error)
             throw new InternalServerErrorException({
-              message: "errors.internal",
+              messages: ["errors.internal"],
               status: HttpStatus.INTERNAL_SERVER_ERROR
             })
         }
