@@ -1,24 +1,19 @@
-import { ValidationPipe } from "@nestjs/common"
 import { NestFactory } from "@nestjs/core"
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
+import { SwaggerModule } from "@nestjs/swagger"
+import document from "./docs/swagger"
 import { ErrorInterceptor } from "./interceptors/error.interceptor"
 import { PrismaInterceptor } from "./interceptors/prisma.interceptor"
 import { TranslatorInterceptor } from "./interceptors/translator.interceptor"
 import { AppModule } from "./modules/app/app.module"
+import validationPipe from "./pipes/validation.pipe"
+import Environment from "./utils/Environment"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   app.getHttpAdapter().getInstance().disable("x-powered-by")
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      forbidNonWhitelisted: true,
-      validateCustomDecorators: true
-    })
-  )
+  app.useGlobalPipes(validationPipe)
 
   app.useGlobalInterceptors(
     new TranslatorInterceptor(),
@@ -26,29 +21,10 @@ async function bootstrap() {
     new PrismaInterceptor()
   )
 
-  const document = SwaggerModule.createDocument(
-    app,
-    new DocumentBuilder()
-      .setTitle("SelfStore API")
-      .setDescription("SelfStore API Documentation")
-      .setVersion("1.0")
-      .addBearerAuth()
-      .addGlobalParameters({
-        name: "accept-language",
-        description: "Language code (e.g., en-US, tr-TR)",
-        required: false,
-        schema: {
-          default: "en-US",
-          enum: ["en-US", "tr-TR"],
-          type: "string"
-        },
-        in: "header"
-      })
-      .build()
-  )
-  SwaggerModule.setup("swagger", app, document)
+  SwaggerModule.setup("swagger", app, document(app))
 
-  await app.listen(process.env.PORT ?? 30000)
+  Environment.check()
+  await app.listen(Environment.PORT)
 }
 
 bootstrap()
