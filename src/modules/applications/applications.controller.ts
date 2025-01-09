@@ -15,7 +15,6 @@ import {
   ApiTags
 } from "@nestjs/swagger"
 import { JwtAuthGuard } from "src/auth/jwt.guard"
-import Translator from "src/utils/Translator"
 import { ApplicationsService } from "./applications.service"
 import { CreateApplicationDto } from "./dto/create-application.dto"
 import { Application } from "./entities/application.entity"
@@ -42,11 +41,9 @@ export class ApplicationsController {
     @Body() createApplicationDto: CreateApplicationDto,
     @Req() request: AuthRequest
   ) {
-    const translator = new Translator(request.acceptLanguage)
     return this.applicationsService.request(
       createApplicationDto,
-      request.user.sub,
-      translator
+      request.user.sub
     )
   }
 

@@ -8,7 +8,6 @@ import {
   UseGuards
 } from "@nestjs/common"
 import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger"
-import Translator from "src/utils/Translator"
 import { JwtAuthGuard } from "../../auth/jwt.guard"
 import { DeveloperService } from "./developer.service"
 import { LoginDeveloperDto } from "./dto/login-developer.dto"
@@ -21,6 +20,15 @@ export class DeveloperController {
   constructor(private readonly developerService: DeveloperService) {}
 
   @Post("register")
+  @ApiOperation({
+    summary: "Register a new developer",
+    description: "Registers a new developer account"
+  })
+  @ApiResponse({
+    status: 201,
+    description: "Developer registered successfully",
+    type: RegisterDeveloperDto
+  })
   register(@Body() createDeveloperDto: RegisterDeveloperDto) {
     return this.developerService.register(createDeveloperDto)
   }
@@ -36,35 +44,25 @@ export class DeveloperController {
     type: LoginResponseDto
   })
   @HttpCode(200)
-  login(
-    @Body() loginDeveloperDto: LoginDeveloperDto,
-    @Req() request: NestRequest
-  ) {
-    const translator = new Translator(request.acceptLanguage)
-
-    return this.developerService.login(loginDeveloperDto, translator)
+  login(@Body() loginDeveloperDto: LoginDeveloperDto) {
+    return this.developerService.login(loginDeveloperDto)
   }
 
   @Get("profile")
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({
     summary: "Get developer profile",
     description:
       "Retrieves the profile information for the authenticated developer"
   })
-  @ApiBearerAuth()
   @ApiResponse({
     status: 200,
     description: "Profile retrieved successfully",
     type: ProfileDeveloperDto
   })
-  @ApiResponse({
-    status: 401,
-    description: "Unauthorized"
-  })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
   profile(@Req() request: AuthRequest) {
-    const translator = new Translator(request.acceptLanguage)
-
-    return this.developerService.getProfile(request.user.username, translator)
+    return this.developerService.getProfile(request.user.sub)
   }
 }

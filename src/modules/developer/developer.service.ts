@@ -1,12 +1,11 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException
-} from "@nestjs/common"
+import { Injectable } from "@nestjs/common"
 import { JwtService } from "@nestjs/jwt"
 import { Developer, PrismaClient } from "@prisma/client"
 import { compare, genSalt, hash } from "bcrypt"
-import type Translator from "src/utils/Translator"
+import {
+  NotFoundException,
+  UnauthorizedException
+} from "../../errors/exceptions"
 import { LoginDeveloperDto } from "./dto/login-developer.dto"
 import { RegisterDeveloperDto } from "./dto/register-developer.dto"
 
@@ -36,43 +35,33 @@ export class DeveloperService {
     return { token }
   }
 
-  async login(loginDeveloperDto: LoginDeveloperDto, translator: Translator) {
+  async login(loginDeveloperDto: LoginDeveloperDto) {
     const developer = await prisma.developer.findUnique({
       where: {
         email: loginDeveloperDto.email
       }
     })
 
-    if (!developer)
-      throw new NotFoundException(
-        translator.translate("common.errors.notFound")
-      )
+    if (!developer) throw new NotFoundException("errors.badRequest")
 
     const isPasswordValid = await compare(
       loginDeveloperDto.passphrase,
       developer.passphrase
     )
 
-    if (!isPasswordValid) {
-      throw new UnauthorizedException(
-        translator.translate("common.errors.unauthorized")
-      )
-    }
+    if (!isPasswordValid) throw new UnauthorizedException("errors.unauthorized")
 
     const token = this.generateToken(developer)
 
     return { token }
   }
 
-  async getProfile(username: string, translator: Translator) {
+  async getProfile(id: string) {
     const developer = await prisma.developer.findUnique({
-      where: { username }
+      where: { id }
     })
 
-    if (!developer)
-      throw new NotFoundException(
-        translator.translate("common.errors.notFound")
-      )
+    if (!developer) throw new NotFoundException("errors.notFound")
 
     return {
       realName: developer.realName,
