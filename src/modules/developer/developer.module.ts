@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common"
-import { DeveloperService } from "./developer.service"
-import { DeveloperController } from "./developer.controller"
 import { JwtModule } from "@nestjs/jwt"
-import { jwtConfig } from "../../config/auth.config"
 import { JwtStrategy } from "../../auth/jwt.strategy"
+import { jwtConfig } from "../../config/auth.config"
+import { DeveloperController } from "./developer.controller"
+import { DeveloperService } from "./developer.service"
 
 @Module({
   imports: [
@@ -13,7 +13,6 @@ import { JwtStrategy } from "../../auth/jwt.strategy"
     })
   ],
   controllers: [DeveloperController],
-  providers: [DeveloperService, JwtStrategy],
-  exports: [DeveloperService]
+  providers: [DeveloperService, JwtStrategy]
 })
 export class DeveloperModule {}
