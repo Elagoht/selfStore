@@ -34,32 +34,74 @@ model Developer {
 }
 
 model Application {
-  id                String                  @id @default(uuid())
-  name              String
-  reverseDomain     String                  @unique
-  dockerImageUser   String
-  dockerImageName   String                  @unique
-  dockerImageTag    String                  @default("latest")
+  id String @id @default(uuid())
+
+  // Developer editable fields
+  name            String
+  reverseDomain   String  @unique
+  dockerImageUser String
+  dockerImageName String  @unique
+  dockerImageTag  String  @default("latest")
+  description     String
+  spot            String
+  logo            String
+  sourceCode      String
+  license         License
+
+  // Developer editable optional fields
   dockerRegistryUrl String?
-  description       String
-  spot              String
-  logo              String
-  createdAt         DateTime                @default(now())
-  updatedAt         DateTime                @updatedAt
-  deletedAt         DateTime?
-  lastLogin         DateTime                @default(now())
-  editorsChoice     Boolean                 @default(false)
-  sourceCode        String
   websiteUrl        String?
   privacyPolicyUrl  String?
   termsOfServiceUrl String?
   supportUrl        String?
   supportEmail      String?
-  license           License
-  publishStatus     PublishStatus           @default(REQUESTED)
-  permissions       ApplicationPermission[] @default([])
-  developerId       String
-  Developer         Developer               @relation(fields: [developerId], references: [id])
+
+  // Admin editable fields
+  publishStatus PublishStatus @default(REQUESTED)
+  editorsChoice Boolean       @default(false)
+
+  // Automatically set fields
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  lastLogin DateTime  @default(now())
+  deletedAt DateTime?
+
+  // Relations
+  developerId    String
+  Developer      Developer                  @relation(fields: [developerId], references: [id])
+  updateRequests ApplicationUpdateRequest[]
+}
+
+model ApplicationUpdateRequest {
+  id            String      @id @default(uuid())
+  // Application that this update request is for
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id])
+
+  // Fields can be updated by the developer
+  name              String?
+  dockerImageTag    String?
+  dockerRegistryUrl String?
+  description       String?
+  logo              String?
+  sourceCode        String?
+  websiteUrl        String?
+  privacyPolicyUrl  String?
+  termsOfServiceUrl String?
+  supportUrl        String?
+  supportEmail      String?
+  license           License?
+
+  // Request status
+  status UpdateRequestStatus @default(PENDING)
+
+  // Admin notes
+  adminNotes String?
+
+  // Standard timestamps
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  reviewedAt DateTime?
 }
 
 enum PublishStatus {
@@ -83,7 +125,8 @@ enum License {
   OTHER
 }
 
-enum ApplicationPermission {
-  VOLUME
-  NETWORK
+enum UpdateRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

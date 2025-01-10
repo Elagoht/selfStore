@@ -23,7 +23,6 @@ export class ApplicationsService {
       data: {
         ...createApplicationDto,
         publishStatus: PublishStatus.REQUESTED,
-        permissions: [],
         developerId: developerId
       }
     })
