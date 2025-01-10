@@ -2,6 +2,7 @@ class Environment {
   public static readonly PORT = Number(process.env.PORT)
   public static readonly JWT_SECRET = process.env.JWT_SECRET
   public static readonly JWT_EXPIRATION_TIME = process.env.JWT_EXPIRATION_TIME
+
   public static check() {
     if (!Environment.PORT) throw new EnvironmentError("PORT is not set")
     if (isNaN(Environment.PORT))

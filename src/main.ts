@@ -1,12 +1,12 @@
 import { NestFactory } from "@nestjs/core"
 import { SwaggerModule } from "@nestjs/swagger"
 import document from "./docs/swagger"
-import { ErrorInterceptor } from "./interceptors/error.interceptor"
-import { PrismaInterceptor } from "./interceptors/prisma.interceptor"
-import { TranslatorInterceptor } from "./interceptors/translator.interceptor"
-import { AppModule } from "./modules/app/app.module"
-import validationPipe from "./pipes/validation.pipe"
-import Environment from "./utils/Environment"
+import { ErrorInterceptor } from "./flow/interceptors/error.interceptor"
+import { PrismaInterceptor } from "./flow/interceptors/prisma.interceptor"
+import { TranslatorInterceptor } from "./flow/interceptors/translator.interceptor"
+import validationPipe from "./flow/pipes/validation.pipe"
+import { AppModule } from "./resources/modules/app.module"
+import Environment from "./utilities/Environment"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

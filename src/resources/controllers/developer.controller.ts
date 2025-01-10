@@ -8,12 +8,12 @@ import {
   UseGuards
 } from "@nestjs/common"
 import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger"
-import { JwtAuthGuard } from "../../guards/jwt.guard"
-import { DeveloperService } from "./developer.service"
-import { LoginDeveloperDto } from "./dto/login-developer.dto"
-import { LoginResponseDto } from "./dto/login-response.dto"
-import { ProfileDeveloperDto } from "./dto/profile-developer.dto"
-import { RegisterDeveloperDto } from "./dto/register-developer.dto"
+import { JwtAuthGuard } from "src/flow/guards/jwt.guard"
+import { LoginDeveloperDto } from "src/resources/dtos/requests/login-developer.dto"
+import { RegisterDeveloperDto } from "src/resources/dtos/requests/register-developer.dto"
+import { LoginResponseDto } from "src/resources/dtos/responses/login-developer.dto"
+import { ProfileDeveloperDto } from "src/resources/dtos/responses/profile-developer.dto"
+import { DeveloperService } from "../services/developer.service"
 
 @Controller("auth")
 export class DeveloperController {

@@ -14,10 +14,10 @@ import {
   ApiResponse,
   ApiTags
 } from "@nestjs/swagger"
-import { JwtAuthGuard } from "src/guards/jwt.guard"
-import { ApplicationsService } from "./applications.service"
-import { CreateApplicationDto } from "./dto/create-application.dto"
-import { Application } from "./entities/application.entity"
+import { JwtAuthGuard } from "src/flow/guards/jwt.guard"
+import { CreateApplicationDto } from "src/resources/dtos/requests/create-application.dto"
+import { Application } from "src/resources/models/application.model"
+import { ApplicationsService } from "src/resources/services/applications.service"
 
 @ApiTags("Store")
 @Controller("store")

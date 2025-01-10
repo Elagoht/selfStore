@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common"
 import { PrismaClient, PublishStatus } from "@prisma/client"
-import { ForbiddenException } from "src/errors/exceptions"
-import Printer from "src/utils/Printer"
-import { DeveloperService } from "../developer/developer.service"
-import { CreateApplicationDto } from "./dto/create-application.dto"
+import { ForbiddenException } from "src/utilities/Exceptions"
+import Printer from "src/utilities/Printer"
+import { CreateApplicationDto } from "../dtos/requests/create-application.dto"
+import { DeveloperService } from "./developer.service"
 
 const prisma = new PrismaClient()
 

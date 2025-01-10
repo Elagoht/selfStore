@@ -5,9 +5,9 @@ import { compare, genSalt, hash } from "bcrypt"
 import {
   ForbiddenException,
   UnauthorizedException
-} from "../../errors/exceptions"
-import { LoginDeveloperDto } from "./dto/login-developer.dto"
-import { RegisterDeveloperDto } from "./dto/register-developer.dto"
+} from "../../utilities/Exceptions"
+import { LoginDeveloperDto } from "../dtos/requests/login-developer.dto"
+import { RegisterDeveloperDto } from "../dtos/requests/register-developer.dto"
 
 const prisma = new PrismaClient()
 

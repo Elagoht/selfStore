@@ -1,4 +1,4 @@
-import Environment from "src/utils/Environment"
+import Environment from "src/utilities/Environment"
 
 export const jwtConfig = {
   secret: Environment.JWT_SECRET,

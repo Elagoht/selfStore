@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common"
 import { Observable } from "rxjs"
 import { catchError } from "rxjs/operators"
-import Printer from "src/utils/Printer"
+import Printer from "src/utilities/Printer"
 
 @Injectable()
 export class ErrorInterceptor implements NestInterceptor {

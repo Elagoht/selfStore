@@ -8,7 +8,7 @@ import {
 } from "@nestjs/common"
 import { Observable, throwError } from "rxjs"
 import { catchError } from "rxjs/operators"
-import Translator from "src/utils/Translator"
+import Translator from "src/utilities/Translator"
 
 @Injectable()
 export class TranslatorInterceptor implements NestInterceptor {

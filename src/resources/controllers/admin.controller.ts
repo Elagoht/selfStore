@@ -1,10 +1,9 @@
 import { Body, Controller, Get, Param, Patch } from "@nestjs/common"
 import { ApiResponse } from "@nestjs/swagger"
 import { PublishStatus } from "@prisma/client"
-import { AdminService } from "./admin.service"
-import { StatusApplicationDto } from "./dto/status-application.dto"
-import { StatusDeveloperDto } from "./dto/status-developer.dto"
-
+import { StatusApplicationDto } from "src/resources/dtos/requests/status-application.dto"
+import { StatusDeveloperDto } from "src/resources/dtos/requests/status-developer.dto"
+import { AdminService } from "src/resources/services/admin.service"
 @Controller()
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
