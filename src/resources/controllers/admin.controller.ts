@@ -4,6 +4,7 @@ import { PublishStatus } from "@prisma/client"
 import { StatusApplicationDto } from "src/resources/dtos/requests/status-application.dto"
 import { StatusDeveloperDto } from "src/resources/dtos/requests/status-developer.dto"
 import { AdminService } from "src/resources/services/admin.service"
+
 @Controller()
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
