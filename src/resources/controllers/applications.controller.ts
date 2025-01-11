@@ -1,21 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Req,
-  UseGuards
-} from "@nestjs/common"
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiResponse,
-  ApiTags
-} from "@nestjs/swagger"
-import { JwtAuthGuard } from "src/flow/guards/jwt.guard"
-import { CreateApplicationDto } from "src/resources/dtos/requests/create-application.dto"
+import { Controller, Get, Param } from "@nestjs/common"
+import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger"
 import { Application } from "src/resources/models/application.model"
 import { ApplicationsService } from "src/resources/services/applications.service"
 
@@ -24,30 +8,7 @@ import { ApplicationsService } from "src/resources/services/applications.service
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
-  @Post("request")
-  @ApiOperation({
-    summary: "Create a new application request",
-    description: "Create a new application request"
-  })
-  @ApiBody({ type: CreateApplicationDto })
-  @ApiResponse({
-    status: 201,
-    description: "The application request has been received.",
-    type: Application
-  })
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  request(
-    @Body() createApplicationDto: CreateApplicationDto,
-    @Req() request: AuthRequest
-  ) {
-    return this.applicationsService.request(
-      createApplicationDto,
-      request.user.sub
-    )
-  }
-
-  @Get("applications")
+  @Get()
   @ApiOperation({ summary: "Get all applications" })
   @ApiResponse({
     status: 200,
@@ -58,7 +19,7 @@ export class ApplicationsController {
     return this.applicationsService.findAll()
   }
 
-  @Get("applications/:reverseDomain")
+  @Get(":reverseDomain")
   @ApiOperation({ summary: "Get an application by its reverse domain" })
   @ApiResponse({
     status: 200,

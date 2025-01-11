@@ -7,7 +7,12 @@ import {
   Req,
   UseGuards
 } from "@nestjs/common"
-import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger"
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags
+} from "@nestjs/swagger"
 import { JwtAuthGuard } from "src/flow/guards/jwt.guard"
 import { LoginDeveloperDto } from "src/resources/dtos/requests/login-developer.dto"
 import { RegisterDeveloperDto } from "src/resources/dtos/requests/register-developer.dto"
@@ -15,6 +20,7 @@ import { LoginResponseDto } from "src/resources/dtos/responses/login-developer.d
 import { ProfileDeveloperDto } from "src/resources/dtos/responses/profile-developer.dto"
 import { DeveloperService } from "../services/developer.service"
 
+@ApiTags("Developer Auth")
 @Controller("auth")
 export class DeveloperController {
   constructor(private readonly developerService: DeveloperService) {}

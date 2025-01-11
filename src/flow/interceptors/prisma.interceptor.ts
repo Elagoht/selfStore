@@ -12,6 +12,7 @@ import {
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { Observable } from "rxjs"
 import { catchError } from "rxjs/operators"
+import Printer from "src/utilities/Printer"
 
 @Injectable()
 export class PrismaInterceptor implements NestInterceptor {
@@ -29,13 +30,16 @@ export class PrismaInterceptor implements NestInterceptor {
               case "P2023":
                 throw new NotFoundException("errors.notFound")
               default:
+                Printer.error(error)
                 throw new InternalServerErrorException("errors.internal")
             }
           // Allow manually thrown exceptions
           case error instanceof HttpException:
+            Printer.error(error)
             throw error
           // Unhandled exceptions
           default:
+            Printer.error(error)
             throw new InternalServerErrorException("errors.internal")
         }
       })

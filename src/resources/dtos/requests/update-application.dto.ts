@@ -6,40 +6,31 @@ import {
   IsOptional,
   IsString,
   IsUrl,
-  Matches,
   MaxLength,
   MinLength
 } from "class-validator"
 
-export class CreateApplicationDto {
+export class UpdateApplicationDto {
   @IsString({ message: "validations.common|field=name" })
   @MaxLength(100, { message: "validations.generic.max|max=100,field=name" })
-  @ApiProperty({ description: "Name of the application" })
-  name: string
-
-  @IsString({ message: "validations.common|field=reverseDomain" })
-  @MinLength(8, {
-    message: "validations.generic.min|min=8,field=reverseDomain"
-  })
-  @MaxLength(100, {
-    message: "validations.generic.max|max=100,field=reverseDomain"
-  })
-  @Matches(/^[a-z0-9_-]+\.[a-z0-9_-]+\.[a-z0-9_-]+$/, {
-    message: "validations.reverseDomain|field=reverseDomain"
-  })
+  @IsOptional()
   @ApiProperty({
-    description: "Reverse domain notation identifier CANNOT BE CHANGED LATER!",
-    example: "com.example.app"
+    description: "Name of the application",
+    required: false,
+    nullable: true
   })
-  reverseDomain: string
+  name: string
 
   @IsString({ message: "validations.common|field=dockerImageUser" })
   @MaxLength(100, {
     message: "validations.generic.max|max=100,field=dockerImageUser"
   })
   @ApiProperty({
-    description: "Docker image user part of user/application:tag"
+    description: "Docker image user part of user/application:tag",
+    required: false,
+    nullable: true
   })
+  @IsOptional()
   dockerImageUser: string
 
   @IsString({ message: "validations.common|field=dockerImageName" })
@@ -47,25 +38,28 @@ export class CreateApplicationDto {
     message: "validations.generic.max|max=100,field=dockerImageName"
   })
   @ApiProperty({
-    description: "Docker image name part of user/application:tag"
+    description: "Docker image name part of user/application:tag",
+    required: false,
+    nullable: true
   })
+  @IsOptional()
   dockerImageName: string
 
   @IsString({ message: "validations.common|field=dockerImageTag" })
-  @IsOptional()
   @MaxLength(100, {
     message: "validations.generic.max|max=100,field=dockerImageTag"
   })
+  @IsOptional()
   @ApiProperty({ description: "Docker image tag part of user/application:tag" })
   dockerImageTag: string
 
   @IsUrl({}, { message: "validations.url|field=dockerRegistryUrl" })
-  @IsOptional()
   @ApiProperty({
     description: "Docker registry URL, defaults to Docker Hub",
     required: false,
     nullable: true
   })
+  @IsOptional()
   dockerRegistryUrl: string
 
   @IsString({ message: "validations.common|field=description" })
@@ -76,8 +70,11 @@ export class CreateApplicationDto {
     message: "validations.generic.max|max=1000,field=description"
   })
   @ApiProperty({
-    description: "Description of the application, be descriptive"
+    description: "Description of the application, be descriptive",
+    required: false,
+    nullable: true
   })
+  @IsOptional()
   description: string
 
   @IsString({ message: "validations.common|field=spot" })
@@ -85,24 +82,34 @@ export class CreateApplicationDto {
   @MaxLength(100, {
     message: "validations.generic.max|max=100,field=spot"
   })
+  @IsOptional()
   @ApiProperty({
-    description: "Spot identifier, a short description for listing"
+    description: "Spot identifier, a short description for listing",
+    required: false,
+    nullable: true
   })
   spot: string
 
   @IsUrl({}, { message: "validations.url|field=logo" })
+  @IsOptional()
   @ApiProperty({
-    description: "URL to application logo"
+    description: "URL to application logo",
+    required: false,
+    nullable: true
   })
   logo: string
 
   @IsUrl({}, { message: "validations.url|field=sourceCode" })
   @ApiProperty({
-    description: "URL to source code repository, maybe a git repository URL"
+    description: "URL to source code repository, maybe a git repository URL",
+    required: false,
+    nullable: true
   })
+  @IsOptional()
   sourceCode: string
 
   @IsEnum(License, { message: "validations.license|field=license" })
+  @IsOptional()
   @ApiProperty({ description: "License type", enum: License })
   license: License
 

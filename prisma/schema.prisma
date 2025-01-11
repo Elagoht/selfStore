@@ -75,8 +75,8 @@ model Application {
 model ApplicationUpdateRequest {
   id            String      @id @default(uuid())
   // Application that this update request is for
-  applicationId String
-  application   Application @relation(fields: [applicationId], references: [id])
+  reverseDomain String      @unique
+  application   Application @relation(fields: [reverseDomain], references: [reverseDomain])
 
   // Fields can be updated by the developer
   name              String?
@@ -91,6 +91,7 @@ model ApplicationUpdateRequest {
   supportUrl        String?
   supportEmail      String?
   license           License?
+  architecture      Architecture?
 
   // Request status
   status UpdateRequestStatus @default(PENDING)
@@ -129,4 +130,11 @@ enum UpdateRequestStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum Architecture {
+  ARM64
+  AMD64
+  RISC
+  CISC
 }

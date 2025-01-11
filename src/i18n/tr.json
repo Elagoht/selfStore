@@ -27,6 +27,16 @@
     "invalidCredentials": "Geçersiz kimlik bilgileri"
   },
   "applications": {
-    "forbidden": "Uygulama talebi yapmak için henüz onaylanmadınız."
+    "createRequest": {
+      "forbidden": "Uygulama talebi yapmak için henüz onaylanmadınız.",
+      "notFound": "Uygulama bulunamadı."
+    },
+    "updateRequest": {
+      "notFound": "Güncelleme talebi bulunamadı.",
+      "forbidden": "Bu uygulamanın sahibi değilsiniz"
+    },
+    "list": {
+      "notFound": "Uygulama bulunamadı"
+    }
   }
 }

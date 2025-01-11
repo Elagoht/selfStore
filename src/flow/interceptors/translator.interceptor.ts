@@ -23,7 +23,9 @@ export class TranslatorInterceptor implements NestInterceptor {
           const translator = new Translator(acceptLanguage)
 
           const status = error.getStatus()
-          const response = error.getResponse() as { message: string | string[] }
+          const response = error.getResponse() as {
+            message: string | string[]
+          }
 
           const messages =
             typeof response.message === "string"

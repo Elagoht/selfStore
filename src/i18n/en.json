@@ -27,6 +27,16 @@
     "invalidCredentials": "Invalid credentials"
   },
   "applications": {
-    "forbidden": "You are not authorized to request an application"
+    "createRequest": {
+      "forbidden": "You are not authorized to request an application",
+      "notFound": "Application not found"
+    },
+    "updateRequest": {
+      "notFound": "Update request not found",
+      "forbidden": "You are not the owner of this application"
+    },
+    "list": {
+      "notFound": "Application not found"
+    }
   }
 }
