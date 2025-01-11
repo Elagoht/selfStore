@@ -45,7 +45,7 @@ class UpdateRequestsController {
     )
   }
 
-  @Get("applications/update")
+  @Get()
   @ApiOperation({ summary: "List of your update requests" })
   @ApiResponse({
     status: 200,
@@ -60,7 +60,7 @@ class UpdateRequestsController {
     )
   }
 
-  @Get(":id")
+  @Get(":reverseDomain")
   @ApiOperation({ summary: "Get an update request" })
   @ApiResponse({
     status: 200,
@@ -75,15 +75,15 @@ class UpdateRequestsController {
   @ApiBearerAuth()
   findUpdateRequestOfDeveloper(
     @Req() request: AuthRequest,
-    @Param("id") id: string
+    @Param("reverseDomain") reverseDomain: string
   ) {
     return this.applicationsService.findUpdateRequestOfDeveloper(
       request.user.sub,
-      id
+      reverseDomain
     )
   }
 
-  @Delete(":id")
+  @Delete(":reverseDomain")
   @ApiOperation({ summary: "Delete an update request" })
   @ApiResponse({
     status: 200,
@@ -96,8 +96,14 @@ class UpdateRequestsController {
   @ApiResponse({ status: 404, description: "Application not found." })
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  deleteUpdateRequest(@Req() request: AuthRequest, @Param("id") id: string) {
-    return this.applicationsService.deleteUpdateRequest(request.user.sub, id)
+  deleteUpdateRequest(
+    @Req() request: AuthRequest,
+    @Param("reverseDomain") reverseDomain: string
+  ) {
+    return this.applicationsService.deleteUpdateRequest(
+      request.user.sub,
+      reverseDomain
+    )
   }
 }
 

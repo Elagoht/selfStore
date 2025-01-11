@@ -71,14 +71,8 @@ export class ApplicationsService {
 
   public async findUpdateRequestsOfDeveloper(developerId: string) {
     return await prisma.applicationUpdateRequest.findMany({
-      where: {
-        application: {
-          developerId
-        }
-      },
-      orderBy: {
-        createdAt: "desc"
-      },
+      where: { application: { developerId } },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         status: true,
@@ -95,11 +89,12 @@ export class ApplicationsService {
     })
   }
 
-  public async findUpdateRequestOfDeveloper(developerId: string, id: string) {
+  public async findUpdateRequestOfDeveloper(
+    developerId: string,
+    reverseDomain: string
+  ) {
     const updateRequest = await prisma.applicationUpdateRequest.findUnique({
-      where: {
-        id: id
-      },
+      where: { reverseDomain },
       select: {
         id: true,
         status: true,
@@ -125,16 +120,10 @@ export class ApplicationsService {
     return updateRequest
   }
 
-  public async deleteUpdateRequest(developerId: string, id: string) {
+  public async deleteUpdateRequest(developerId: string, reverseDomain: string) {
     const updateRequest = await prisma.applicationUpdateRequest.findUnique({
-      where: { id },
-      include: {
-        application: {
-          select: {
-            developerId: true
-          }
-        }
-      }
+      where: { reverseDomain },
+      include: { application: { select: { developerId: true } } }
     })
 
     if (!updateRequest)
@@ -144,7 +133,7 @@ export class ApplicationsService {
       throw new ForbiddenException("applications.updateRequest.forbidden")
 
     await prisma.applicationUpdateRequest.delete({
-      where: { id }
+      where: { reverseDomain }
     })
   }
 
