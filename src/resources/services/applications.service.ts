@@ -14,7 +14,7 @@ const prisma = new PrismaClient()
 
 @Injectable()
 export class ApplicationsService {
-  public async request(
+  public async createCreateRequest(
     createApplicationDto: CreateApplicationDto,
     developerId: string
   ) {
@@ -44,9 +44,32 @@ export class ApplicationsService {
   }
 
   public async findByReverseDomain(reverseDomain: string) {
-    return await prisma.application.findUnique({
-      where: { reverseDomain }
+    const application = await prisma.application.findUnique({
+      where: {
+        reverseDomain,
+        deletedAt: null,
+        publishStatus: PublishStatus.PUBLISHED
+      }
     })
+
+    if (!application) throw new NotFoundException("applications.list.notFound")
+
+    return application
+  }
+
+  public async deleteCreateRequest(developerId: string, reverseDomain: string) {
+    const owner = await this.getOwner(reverseDomain)
+
+    if (owner !== developerId)
+      throw new ForbiddenException("applications.updateRequest.forbidden")
+
+    return await prisma.application
+      .delete({
+        where: { reverseDomain }
+      })
+      .then((deleted) => {
+        return { id: deleted.id }
+      })
   }
 
   public async createUpdateRequest(

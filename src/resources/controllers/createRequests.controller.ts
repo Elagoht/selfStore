@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common"
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  Req,
+  UseGuards
+} from "@nestjs/common"
 import {
   ApiBearerAuth,
   ApiBody,
@@ -29,13 +37,36 @@ export class CreateRequestsController {
   })
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  request(
+  createCreateRequest(
     @Body() createApplicationDto: CreateApplicationDto,
     @Req() request: AuthRequest
   ) {
-    return this.applicationsService.request(
+    return this.applicationsService.createCreateRequest(
       createApplicationDto,
       request.user.sub
+    )
+  }
+
+  @Delete(":reverseDomain")
+  @ApiResponse({
+    status: 200,
+    description: "Returns the application create request."
+  })
+  @ApiResponse({
+    status: 403,
+    description: "You are not the owner of this application."
+  })
+  @ApiResponse({ status: 404, description: "Application not found." })
+  @ApiOperation({ summary: "Delete a create request sent by you" })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  deleteCreateRequest(
+    @Req() request: AuthRequest,
+    @Param("reverseDomain") reverseDomain: string
+  ) {
+    return this.applicationsService.deleteCreateRequest(
+      request.user.sub,
+      reverseDomain
     )
   }
 }
