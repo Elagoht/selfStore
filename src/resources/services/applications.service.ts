@@ -8,6 +8,7 @@ import { ForbiddenException, NotFoundException } from "src/utilities/Exceptions"
 import Printer from "src/utilities/Printer"
 import { CreateApplicationDto } from "../dtos/requests/create-application.dto"
 import { UpdateApplicationDto } from "../dtos/requests/update-application.dto"
+import { UpdateCreateRequestDto } from "../dtos/requests/update-creat-request.dto"
 import { DeveloperService } from "./developer.service"
 
 const prisma = new PrismaClient()
@@ -168,5 +169,21 @@ export class ApplicationsService {
     if (!application) throw new NotFoundException("applications.list.notFound")
 
     return application.developerId
+  }
+
+  public async updateCreateRequest(
+    developerId: string,
+    reverseDomain: string,
+    updateCreateRequestDto: UpdateCreateRequestDto
+  ) {
+    const owner = await this.getOwner(reverseDomain)
+
+    if (owner !== developerId)
+      throw new ForbiddenException("applications.updateRequest.forbidden")
+
+    return await prisma.application.update({
+      where: { reverseDomain },
+      data: updateCreateRequestDto
+    })
   }
 }

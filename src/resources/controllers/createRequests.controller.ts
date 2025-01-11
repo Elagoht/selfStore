@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards
@@ -18,6 +19,7 @@ import { JwtAuthGuard } from "src/flow/guards/jwt.guard"
 import { CreateApplicationDto } from "src/resources/dtos/requests/create-application.dto"
 import { Application } from "src/resources/models/application.model"
 import { ApplicationsService } from "src/resources/services/applications.service"
+import { UpdateCreateRequestDto } from "../dtos/requests/update-creat-request.dto"
 
 @ApiTags("Create Requests")
 @Controller("create")
@@ -67,6 +69,25 @@ export class CreateRequestsController {
     return this.applicationsService.deleteCreateRequest(
       request.user.sub,
       reverseDomain
+    )
+  }
+
+  @Patch(":reverseDomain")
+  @ApiOperation({
+    summary: "Update a create request that not approved yet and sent by you"
+  })
+  @ApiBody({ type: UpdateCreateRequestDto })
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  updateCreateRequest(
+    @Req() request: AuthRequest,
+    @Param("reverseDomain") reverseDomain: string,
+    @Body() updateCreateRequestDto: UpdateCreateRequestDto
+  ) {
+    return this.applicationsService.updateCreateRequest(
+      request.user.sub,
+      reverseDomain,
+      updateCreateRequestDto
     )
   }
 }
