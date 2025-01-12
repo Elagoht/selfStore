@@ -1,4 +1,4 @@
-import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger"
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from "@nestjs/swagger"
 
 import {
   Body,
@@ -7,6 +7,7 @@ import {
   Get,
   Param,
   Patch,
+  Query,
   Req,
   UseGuards
 } from "@nestjs/common"
@@ -52,11 +53,19 @@ class UpdateRequestsController {
     description: "Return the application update requests list.",
     type: [UpdateApplicationResponse]
   })
+  @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
+  @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  findUpdateRequestsOfDeveloper(@Req() request: AuthRequest) {
+  findUpdateRequestsOfDeveloper(
+    @Req() request: AuthRequest,
+    @Query("page") page: number,
+    @Query("take") take: number
+  ) {
     return this.applicationsService.findUpdateRequestsOfDeveloper(
-      request.user.sub
+      request.user.sub,
+      page,
+      take
     )
   }
 

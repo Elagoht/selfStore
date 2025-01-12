@@ -1,25 +1,27 @@
 import { Injectable } from "@nestjs/common"
 import { PrismaClient, PublishStatus } from "@prisma/client"
+import Paginator from "src/utilities/Paginator"
 
 const prisma = new PrismaClient()
 
 @Injectable()
 export class AdminService {
   public changeApplicationPublishStatus(
-    applicationId: string,
+    reverseDomain: string,
     publishStatus: PublishStatus
   ) {
     return prisma.application.update({
-      where: { id: applicationId },
+      where: { reverseDomain },
       data: { publishStatus }
     })
   }
 
-  public getAllApplications() {
+  public getAllApplications(page: number, take: number) {
     return prisma.application.findMany({
       where: {
         deletedAt: null
-      }
+      },
+      ...new Paginator(page, take).paginate()
     })
   }
 

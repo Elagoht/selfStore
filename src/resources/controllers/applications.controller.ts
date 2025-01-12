@@ -1,5 +1,5 @@
-import { Controller, Get, Param } from "@nestjs/common"
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger"
+import { Controller, Get, Param, Query } from "@nestjs/common"
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger"
 import { Application } from "src/resources/models/application.model"
 import { ApplicationsService } from "src/resources/services/applications.service"
 
@@ -9,14 +9,16 @@ export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
   @Get()
-  @ApiOperation({ summary: "Get all applications" })
+  @ApiOperation({ summary: "Get all published applications" })
   @ApiResponse({
     status: 200,
-    description: "Return all applications.",
+    description: "Return all published applications.",
     type: [Application]
   })
-  findAll() {
-    return this.applicationsService.findAll()
+  @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
+  @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
+  findAll(@Query("page") page: number, @Query("take") take: number) {
+    return this.applicationsService.findAll(page, take)
   }
 
   @Get(":reverseDomain")

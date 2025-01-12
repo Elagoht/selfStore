@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Patch } from "@nestjs/common"
-import { ApiResponse } from "@nestjs/swagger"
+import { Body, Controller, Get, Param, Patch, Query } from "@nestjs/common"
+import { ApiQuery, ApiResponse } from "@nestjs/swagger"
 import { PublishStatus } from "@prisma/client"
 import { StatusApplicationDto } from "src/resources/dtos/requests/status-application.dto"
 import { StatusDeveloperDto } from "src/resources/dtos/requests/status-developer.dto"
@@ -9,13 +9,13 @@ import { AdminService } from "src/resources/services/admin.service"
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @Patch("applications/:applicationId/status")
+  @Patch("applications/:reverseDomain/status")
   changeApplicationPublishStatus(
-    @Param("applicationId") applicationId: string,
+    @Param("reverseDomain") reverseDomain: string,
     @Body() body: StatusApplicationDto
   ) {
     return this.adminService.changeApplicationPublishStatus(
-      applicationId,
+      reverseDomain,
       body.publishStatus.toUpperCase() as PublishStatus
     )
   }
@@ -41,7 +41,9 @@ export class AdminController {
   }
 
   @Get("admin/applications")
-  getAllApplications() {
-    return this.adminService.getAllApplications()
+  @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
+  @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
+  getAllApplications(@Query("page") page: number, @Query("take") take: number) {
+    return this.adminService.getAllApplications(page, take)
   }
 }

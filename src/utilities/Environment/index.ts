@@ -2,15 +2,23 @@ class Environment {
   public static readonly PORT = Number(process.env.PORT)
   public static readonly JWT_SECRET = process.env.JWT_SECRET
   public static readonly JWT_EXPIRATION_TIME = process.env.JWT_EXPIRATION_TIME
+  public static readonly PAGINATE_BY = Number(process.env.PAGINATE_BY)
 
-  public static check() {
-    if (!Environment.PORT) throw new EnvironmentError("PORT is not set")
-    if (isNaN(Environment.PORT))
-      throw new EnvironmentError("PORT is not a number")
-    if (!Environment.JWT_SECRET)
-      throw new EnvironmentError("JWT_SECRET is not set")
-    if (!Environment.JWT_EXPIRATION_TIME)
-      throw new EnvironmentError("JWT_EXPIRATION_TIME is not set")
+  public static check(): void {
+    const keys = ["PORT", "JWT_SECRET", "JWT_EXPIRATION_TIME", "PAGINATE_BY"]
+    const numbers = ["PORT", "PAGINATE_BY"]
+
+    keys.forEach((key) => Environment.checkIsExisting(process.env[key], key))
+    numbers.forEach((key) => Environment.checkIsNumber(process.env[key], key))
+  }
+
+  private static checkIsNumber(value: any, name: string) {
+    if (Number.isNaN(value))
+      throw new EnvironmentError(`${name} is not a number`)
+  }
+
+  private static checkIsExisting(value: any, name: string) {
+    if (!value) throw new EnvironmentError(`${name} is not set`)
   }
 }
 

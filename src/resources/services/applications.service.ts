@@ -5,6 +5,7 @@ import {
   UpdateRequestStatus
 } from "@prisma/client"
 import { ForbiddenException, NotFoundException } from "src/utilities/Exceptions"
+import Paginator from "src/utilities/Paginator"
 import Printer from "src/utilities/Printer"
 import { CreateApplicationDto } from "../dtos/requests/create-application.dto"
 import { UpdateApplicationDto } from "../dtos/requests/update-application.dto"
@@ -35,12 +36,13 @@ export class ApplicationsService {
     })
   }
 
-  public async findAll() {
+  public async findAll(page: number, take: number) {
     return await prisma.application.findMany({
       where: {
         deletedAt: null,
         publishStatus: PublishStatus.PUBLISHED
-      }
+      },
+      ...new Paginator(page, take).paginate()
     })
   }
 
@@ -93,10 +95,15 @@ export class ApplicationsService {
     })
   }
 
-  public async findUpdateRequestsOfDeveloper(developerId: string) {
+  public async findUpdateRequestsOfDeveloper(
+    developerId: string,
+    page: number,
+    take: number
+  ) {
     return await prisma.applicationUpdateRequest.findMany({
       where: { application: { developerId } },
       orderBy: { createdAt: "desc" },
+      ...new Paginator(page, take).paginate(),
       select: {
         id: true,
         status: true,
