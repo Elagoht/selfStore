@@ -193,4 +193,15 @@ export class ApplicationsService {
       data: updateCreateRequestDto
     })
   }
+
+  public async findByDeveloperUsername(developerUsername: string) {
+    Printer.info(developerUsername)
+    return await prisma.application.findMany({
+      where: {
+        Developer: {
+          username: developerUsername
+        }
+      }
+    })
+  }
 }

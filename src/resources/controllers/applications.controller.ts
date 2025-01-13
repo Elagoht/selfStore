@@ -32,4 +32,15 @@ export class ApplicationsController {
   findByReverseDomain(@Param("reverseDomain") reverseDomain: string) {
     return this.applicationsService.findByReverseDomain(reverseDomain)
   }
+
+  @Get("developer/:username")
+  @ApiOperation({ summary: "Get an application by its developer username" })
+  @ApiResponse({
+    status: 200,
+    description: "Return the application array of the developer",
+    type: [Application]
+  })
+  findByDeveloperUsername(@Param("username") username: string) {
+    return this.applicationsService.findByDeveloperUsername(username)
+  }
 }
