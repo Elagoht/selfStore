@@ -21,24 +21,17 @@ export class AdminController {
     )
   }
 
-  @Patch("developers/:username/approve")
+  @Patch("developers/status/:username")
   @ApiResponse({
     status: 200,
-    description: "Developer approved successfully",
+    description: "Developer status changed successfully",
     type: StatusDeveloperDto
   })
-  approveDeveloper(@Param("username") username: string) {
-    return this.adminService.approveDeveloper(username)
-  }
-
-  @Patch("developers/:username/reject")
-  @ApiResponse({
-    status: 200,
-    description: "Developer rejected successfully",
-    type: StatusDeveloperDto
-  })
-  rejectDeveloper(@Param("username") username: string) {
-    return this.adminService.rejectDeveloper(username)
+  changeDeveloperStatus(
+    @Param("username") username: string,
+    @Body() body: StatusDeveloperDto
+  ) {
+    return this.adminService.changeDeveloperStatus(username, body.approved)
   }
 
   @Get("store")

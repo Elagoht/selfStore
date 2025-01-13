@@ -29,15 +29,7 @@ export class AdminService {
     })
   }
 
-  public approveDeveloper(username: string) {
-    return this.changeDeveloperStatus(username, true)
-  }
-
-  public rejectDeveloper(username: string) {
-    return this.changeDeveloperStatus(username, false)
-  }
-
-  private async changeDeveloperStatus(username: string, approved: boolean) {
+  public async changeDeveloperStatus(username: string, approved: boolean) {
     const developer = await prisma.developer.update({
       where: { username },
       data: { approved }
