@@ -5,11 +5,11 @@ import { StatusApplicationDto } from "src/resources/dtos/requests/status-applica
 import { StatusDeveloperDto } from "src/resources/dtos/requests/status-developer.dto"
 import { AdminService } from "src/resources/services/admin.service"
 
-@Controller()
+@Controller("admin")
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
-  @Patch("applications/:reverseDomain/status")
+  @Patch("store/:reverseDomain/status")
   changeApplicationPublishStatus(
     @Param("reverseDomain") reverseDomain: string,
     @Body() body: StatusApplicationDto
@@ -40,7 +40,7 @@ export class AdminController {
     return this.adminService.rejectDeveloper(developerId)
   }
 
-  @Get("admin/applications")
+  @Get("store")
   @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
   @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
   getAllApplications(@Query("page") page: number, @Query("take") take: number) {
