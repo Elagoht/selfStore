@@ -4,6 +4,7 @@ import { PublishStatus } from "@prisma/client"
 import { StatusApplicationDto } from "src/resources/dtos/requests/status-application.dto"
 import { StatusDeveloperDto } from "src/resources/dtos/requests/status-developer.dto"
 import { AdminService } from "src/resources/services/admin.service"
+import { ApplicationCardResponse } from "../dtos/responses/application-card.dto"
 
 @Controller("admin")
 export class AdminController {
@@ -43,6 +44,11 @@ export class AdminController {
   @Get("store")
   @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
   @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
+  @ApiResponse({
+    status: 200,
+    description: "Return all applications regardless of its status",
+    type: [ApplicationCardResponse]
+  })
   getAllApplications(@Query("page") page: number, @Query("take") take: number) {
     return this.adminService.getAllApplications(page, take)
   }

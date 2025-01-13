@@ -6,7 +6,7 @@ import {
 } from "@prisma/client"
 import { ForbiddenException, NotFoundException } from "src/utilities/Exceptions"
 import Paginator from "src/utilities/Paginator"
-import Printer from "src/utilities/Printer"
+import Transform from "src/utilities/Transform"
 import { CreateApplicationDto } from "../dtos/requests/create-application.dto"
 import { UpdateApplicationDto } from "../dtos/requests/update-application.dto"
 import { UpdateCreateRequestDto } from "../dtos/requests/update-creat-request.dto"
@@ -22,12 +22,10 @@ export class ApplicationsService {
   ) {
     const approvedUser = await DeveloperService.isApproved(developerId)
 
-    Printer.info(approvedUser)
-
     if (!approvedUser)
       throw new ForbiddenException("applications.createRequest.forbidden")
 
-    return prisma.application.create({
+    return await prisma.application.create({
       data: {
         ...createApplicationDto,
         publishStatus: PublishStatus.REQUESTED,
@@ -42,7 +40,10 @@ export class ApplicationsService {
         deletedAt: null,
         publishStatus: PublishStatus.PUBLISHED
       },
-      ...new Paginator(page, take).paginate()
+      ...new Paginator(page, take).paginate(),
+      select: {
+        ...Transform.toApplicationCardResponse
+      }
     })
   }
 
@@ -199,7 +200,6 @@ export class ApplicationsService {
     page: number,
     take: number
   ) {
-    Printer.info(developerUsername)
     return await prisma.application.findMany({
       where: {
         Developer: {
@@ -208,7 +208,10 @@ export class ApplicationsService {
         deletedAt: null,
         publishStatus: PublishStatus.PUBLISHED
       },
-      ...new Paginator(page, take).paginate()
+      ...new Paginator(page, take).paginate(),
+      select: {
+        ...Transform.toApplicationCardResponse
+      }
     })
   }
 }

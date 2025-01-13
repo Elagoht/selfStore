@@ -39,7 +39,7 @@ export class ApplicationsController {
   @ApiResponse({
     status: 200,
     description: "Return the application array of the developer",
-    type: [Application]
+    type: [ApplicationCardResponse]
   })
   @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
   @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
