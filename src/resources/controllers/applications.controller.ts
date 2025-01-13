@@ -2,6 +2,7 @@ import { Controller, Get, Param, Query } from "@nestjs/common"
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger"
 import { Application } from "src/resources/models/application.model"
 import { ApplicationsService } from "src/resources/services/applications.service"
+import { ApplicationCardResponse } from "../dtos/responses/application-card.dto"
 
 @ApiTags("Store")
 @Controller("store")
@@ -9,11 +10,11 @@ export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
   @Get()
-  @ApiOperation({ summary: "Get all published applications" })
+  @ApiOperation({ summary: "Get paginated published application cards" })
   @ApiResponse({
     status: 200,
-    description: "Return all published applications.",
-    type: [Application]
+    description: "Return paginated published application cards.",
+    type: [ApplicationCardResponse]
   })
   @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
   @ApiQuery({ name: "take", type: Number, required: false, default: 12 })

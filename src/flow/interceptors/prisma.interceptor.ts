@@ -28,6 +28,7 @@ export class PrismaInterceptor implements NestInterceptor {
               case "P2007":
                 throw new BadRequestException("errors.badRequest")
               case "P2023":
+              case "P2025":
                 throw new NotFoundException("errors.notFound")
               default:
                 Printer.error(error)

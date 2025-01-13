@@ -82,9 +82,3 @@ export class Application {
   @ApiProperty({ description: "Support email address", nullable: true })
   supportEmail: string
 }
-
-export enum PublishStatus {
-  REQUESTED = "REQUESTED",
-  PUBLISHED = "PUBLISHED",
-  REJECTED = "REJECTED"
-}
