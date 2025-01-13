@@ -1,17 +1,10 @@
-import { Application } from "@prisma/client"
-import { ApplicationCardResponse } from "src/resources/dtos/responses/application-card.dto"
-
 class Transform {
-  static toApplicationCardResponse(
-    application: Application
-  ): ApplicationCardResponse {
-    return {
-      license: application.license,
-      name: application.name,
-      reverseDomain: application.reverseDomain,
-      spot: application.spot,
-      logo: application.logo
-    }
+  static toApplicationCardResponse = {
+    license: true,
+    name: true,
+    reverseDomain: true,
+    spot: true,
+    logo: true
   }
 }
 

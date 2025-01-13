@@ -6,10 +6,10 @@ import { ApplicationCardResponse } from "../dtos/responses/application-card.dto"
 
 @ApiTags("Store")
 @Controller("store")
-export class ApplicationsController {
+export class StoreController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
-  @Get()
+  @Get("applications")
   @ApiOperation({ summary: "Get paginated published application cards" })
   @ApiResponse({
     status: 200,
@@ -22,7 +22,7 @@ export class ApplicationsController {
     return this.applicationsService.findAll(page, take)
   }
 
-  @Get(":reverseDomain")
+  @Get("applications/:reverseDomain")
   @ApiOperation({ summary: "Get an application by its reverse domain" })
   @ApiResponse({
     status: 200,
@@ -34,7 +34,14 @@ export class ApplicationsController {
     return this.applicationsService.findByReverseDomain(reverseDomain)
   }
 
-  @Get("developer/:username")
+  @Get("developers")
+  @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
+  @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
+  findAllDevelopers(@Query("page") page: number, @Query("take") take: number) {
+    return this.applicationsService.getAllApprovedDevelopers(page, take)
+  }
+
+  @Get("developers/:username")
   @ApiOperation({ summary: "Get applications by its developer username" })
   @ApiResponse({
     status: 200,

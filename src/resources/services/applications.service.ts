@@ -6,6 +6,7 @@ import {
 } from "@prisma/client"
 import { ForbiddenException, NotFoundException } from "src/utilities/Exceptions"
 import Paginator from "src/utilities/Paginator"
+import Printer from "src/utilities/Printer"
 import Transform from "src/utilities/Transform"
 import { CreateApplicationDto } from "../dtos/requests/create-application.dto"
 import { UpdateApplicationDto } from "../dtos/requests/update-application.dto"
@@ -41,13 +42,12 @@ export class ApplicationsService {
         publishStatus: PublishStatus.PUBLISHED
       },
       ...new Paginator(page, take).paginate(),
-      select: {
-        ...Transform.toApplicationCardResponse
-      }
+      select: Transform.toApplicationCardResponse
     })
   }
 
   public async findByReverseDomain(reverseDomain: string) {
+    Printer.debug(reverseDomain)
     const application = await prisma.application.findUnique({
       where: {
         reverseDomain,
@@ -209,9 +209,20 @@ export class ApplicationsService {
         publishStatus: PublishStatus.PUBLISHED
       },
       ...new Paginator(page, take).paginate(),
-      select: {
-        ...Transform.toApplicationCardResponse
-      }
+      select: Transform.toApplicationCardResponse
+    })
+  }
+
+  public async getAllApprovedDevelopers(page: number, take: number) {
+    return await prisma.developer.findMany({
+      where: { approved: true },
+      ...new Paginator(page, take).paginate()
+    })
+  }
+
+  public async getAllDevelopers(page: number, take: number) {
+    return await prisma.developer.findMany({
+      ...new Paginator(page, take).paginate()
     })
   }
 }

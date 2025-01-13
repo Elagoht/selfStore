@@ -23,9 +23,7 @@ export class AdminService {
         deletedAt: null
       },
       ...new Paginator(page, take).paginate(),
-      select: {
-        ...Transform.toApplicationCardResponse
-      }
+      select: Transform.toApplicationCardResponse
     })
   }
 
