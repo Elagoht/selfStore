@@ -204,7 +204,9 @@ export class ApplicationsService {
       where: {
         Developer: {
           username: developerUsername
-        }
+        },
+        deletedAt: null,
+        publishStatus: PublishStatus.PUBLISHED
       },
       ...new Paginator(page, take).paginate()
     })

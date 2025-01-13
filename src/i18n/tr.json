@@ -2,6 +2,7 @@
   "errors": {
     "unauthorized": "Yetkisiz erişim",
     "notFound": "Bulunamadı",
+    "notFoundToProcess": "İşlem yapılacak bir şey bulunamadı",
     "forbidden": "Erişim reddedildi",
     "conflict": "Zaten mevcut",
     "internal": "Dahili sunucu hatası",

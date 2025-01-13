@@ -2,6 +2,7 @@
   "errors": {
     "unauthorized": "Unauthorized access",
     "notFound": "Not found",
+    "notFoundToProcess": "No such thing to process",
     "forbidden": "Access denied",
     "conflict": "Already exists",
     "internal": "Internal server error",

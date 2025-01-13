@@ -1,17 +1,19 @@
 import {
-  BadRequestException,
   CallHandler,
-  ConflictException,
   ExecutionContext,
   HttpException,
   Injectable,
-  InternalServerErrorException,
-  NestInterceptor,
-  NotFoundException
+  NestInterceptor
 } from "@nestjs/common"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { Observable } from "rxjs"
 import { catchError } from "rxjs/operators"
+import {
+  BadRequestException,
+  ConflictException,
+  InternalServerErrorException,
+  NotFoundException
+} from "src/utilities/Exceptions"
 import Printer from "src/utilities/Printer"
 
 @Injectable()
@@ -28,8 +30,9 @@ export class PrismaInterceptor implements NestInterceptor {
               case "P2007":
                 throw new BadRequestException("errors.badRequest")
               case "P2023":
-              case "P2025":
                 throw new NotFoundException("errors.notFound")
+              case "P2025":
+                throw new NotFoundException("errors.notFoundToProcess")
               default:
                 Printer.error(error)
                 throw new InternalServerErrorException("errors.internal")
