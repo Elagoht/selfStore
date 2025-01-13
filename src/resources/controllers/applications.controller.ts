@@ -34,13 +34,23 @@ export class ApplicationsController {
   }
 
   @Get("developer/:username")
-  @ApiOperation({ summary: "Get an application by its developer username" })
+  @ApiOperation({ summary: "Get applications by its developer username" })
   @ApiResponse({
     status: 200,
     description: "Return the application array of the developer",
     type: [Application]
   })
-  findByDeveloperUsername(@Param("username") username: string) {
-    return this.applicationsService.findByDeveloperUsername(username)
+  @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
+  @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
+  findByDeveloperUsername(
+    @Param("username") username: string,
+    @Query("page") page: number,
+    @Query("take") take: number
+  ) {
+    return this.applicationsService.findByDeveloperUsername(
+      username,
+      page,
+      take
+    )
   }
 }

@@ -194,14 +194,19 @@ export class ApplicationsService {
     })
   }
 
-  public async findByDeveloperUsername(developerUsername: string) {
+  public async findByDeveloperUsername(
+    developerUsername: string,
+    page: number,
+    take: number
+  ) {
     Printer.info(developerUsername)
     return await prisma.application.findMany({
       where: {
         Developer: {
           username: developerUsername
         }
-      }
+      },
+      ...new Paginator(page, take).paginate()
     })
   }
 }
