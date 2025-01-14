@@ -40,7 +40,9 @@ export class AdminAuthService {
 
     this.deleteToken(token)
 
-    return this.generateJWT(admin)
+    return {
+      token: this.generateJWT(admin)
+    }
   }
 
   public async loginAdmin(email: string, passphrase: string) {
@@ -53,7 +55,9 @@ export class AdminAuthService {
     if (admin.passphrase !== passphrase)
       throw new ForbiddenException("adminAuth.invalidCredentials")
 
-    return this.generateJWT(admin)
+    return {
+      token: this.generateJWT(admin)
+    }
   }
 
   /**
