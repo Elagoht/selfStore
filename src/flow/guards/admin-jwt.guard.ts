@@ -8,7 +8,7 @@ import { AuthGuard } from "@nestjs/passport"
 import Translator from "src/utilities/Translator"
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard("jwt") {
+export class AdminJwtAuthGuard extends AuthGuard("jwt") {
   canActivate(context: ExecutionContext): Promise<boolean> {
     return super.canActivate(context) as Promise<boolean>
   }

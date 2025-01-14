@@ -6,8 +6,8 @@ import {
   ForbiddenException,
   UnauthorizedException
 } from "../../utilities/Exceptions"
-import { LoginDeveloperDto } from "../dtos/requests/login-developer.dto"
-import { RegisterDeveloperDto } from "../dtos/requests/register-developer.dto"
+import { LoginDeveloperRequest } from "../dtos/requests/login-developer.request"
+import { RegisterDeveloperRequest } from "../dtos/requests/register-developer.request"
 
 const prisma = new PrismaClient()
 
@@ -15,7 +15,7 @@ const prisma = new PrismaClient()
 export class DeveloperService {
   constructor(private jwtService: JwtService) {}
 
-  async register(createDeveloperDto: RegisterDeveloperDto) {
+  async register(createDeveloperDto: RegisterDeveloperRequest) {
     const salt = await genSalt(10)
     const hashedPassphrase = await hash(createDeveloperDto.passphrase, salt)
 
@@ -31,11 +31,11 @@ export class DeveloperService {
       }
     })
 
-    const token = this.generateToken(developer)
+    const token = this.generateJWT(developer)
     return { token }
   }
 
-  async login(loginDeveloperDto: LoginDeveloperDto) {
+  async login(loginDeveloperDto: LoginDeveloperRequest) {
     const developer = await prisma.developer.findUnique({
       where: {
         email: loginDeveloperDto.email
@@ -53,7 +53,7 @@ export class DeveloperService {
     if (!isPasswordValid)
       throw new UnauthorizedException("developers.invalidCredentials")
 
-    const token = this.generateToken(developer)
+    const token = this.generateJWT(developer)
 
     return { token }
   }
@@ -83,7 +83,7 @@ export class DeveloperService {
     return developer?.approved
   }
 
-  private generateToken(developer: Developer) {
+  private generateJWT(developer: Developer) {
     const payload = {
       sub: developer.id,
       username: developer.username

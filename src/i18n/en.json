@@ -39,5 +39,9 @@
     "list": {
       "notFound": "Application not found"
     }
+  },
+  "adminAuth": {
+    "tokenInvalid": "Token is invalid. Request a new token",
+    "tokenExpired": "Token is expired. Request a new token"
   }
 }

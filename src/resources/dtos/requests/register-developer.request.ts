@@ -8,7 +8,7 @@ import {
   MinLength
 } from "class-validator"
 
-export class RegisterDeveloperDto {
+export class RegisterDeveloperRequest {
   @IsString({ message: "validations.common|field=username" })
   @MinLength(3, { message: "validations.generic.min|min=3,field=username" })
   @MaxLength(20, { message: "validations.generic.max|max=20,field=username" })

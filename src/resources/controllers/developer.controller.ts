@@ -13,11 +13,11 @@ import {
   ApiResponse,
   ApiTags
 } from "@nestjs/swagger"
-import { JwtAuthGuard } from "src/flow/guards/jwt.guard"
-import { LoginDeveloperDto } from "src/resources/dtos/requests/login-developer.dto"
-import { RegisterDeveloperDto } from "src/resources/dtos/requests/register-developer.dto"
-import { LoginResponseDto } from "src/resources/dtos/responses/login-developer.dto"
-import { ProfileDeveloperDto } from "src/resources/dtos/responses/profile-developer.dto"
+import { DeveloperJwtAuthGuard } from "src/flow/guards/developer-jwt.guard"
+import { LoginDeveloperRequest } from "src/resources/dtos/requests/login-developer.request"
+import { RegisterDeveloperRequest } from "src/resources/dtos/requests/register-developer.request"
+import { LoginResponse } from "src/resources/dtos/responses/login-developer.response"
+import { ProfileDeveloperResponse } from "src/resources/dtos/responses/profile-developer.response"
 import { DeveloperService } from "../services/developer.service"
 
 @ApiTags("Developer Auth")
@@ -33,9 +33,9 @@ export class DeveloperController {
   @ApiResponse({
     status: 201,
     description: "Developer registered successfully",
-    type: RegisterDeveloperDto
+    type: RegisterDeveloperRequest
   })
-  register(@Body() createDeveloperDto: RegisterDeveloperDto) {
+  register(@Body() createDeveloperDto: RegisterDeveloperRequest) {
     return this.developerService.register(createDeveloperDto)
   }
 
@@ -47,15 +47,15 @@ export class DeveloperController {
   @ApiResponse({
     status: 200,
     description: "Login successful",
-    type: LoginResponseDto
+    type: LoginResponse
   })
   @HttpCode(200)
-  login(@Body() loginDeveloperDto: LoginDeveloperDto) {
+  login(@Body() loginDeveloperDto: LoginDeveloperRequest) {
     return this.developerService.login(loginDeveloperDto)
   }
 
   @Get("profile")
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(DeveloperJwtAuthGuard)
   @ApiBearerAuth()
   @ApiOperation({
     summary: "Get developer profile",
@@ -65,7 +65,7 @@ export class DeveloperController {
   @ApiResponse({
     status: 200,
     description: "Profile retrieved successfully",
-    type: ProfileDeveloperDto
+    type: ProfileDeveloperResponse
   })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   profile(@Req() request: AuthRequest) {

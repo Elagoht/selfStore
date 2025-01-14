@@ -2,7 +2,7 @@ import { Controller, Get, Param, Query } from "@nestjs/common"
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger"
 import { Application } from "src/resources/models/application.model"
 import { ApplicationsService } from "src/resources/services/applications.service"
-import { ApplicationCardResponse } from "../dtos/responses/application-card.dto"
+import { ApplicationCardResponse } from "../dtos/responses/application-card.response"
 
 @ApiTags("Store")
 @Controller("store")

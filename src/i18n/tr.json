@@ -39,5 +39,9 @@
     "list": {
       "notFound": "Uygulama bulunamadı"
     }
+  },
+  "adminAuth": {
+    "tokenInvalid": "Güvenlik Anahtarı geçersiz. Yeni bir güvenlik anahtarı isteyiniz.",
+    "tokenExpired": "Güvenlik Anahtarı süresi doldu. Yeni bir güvenlik anahtarı isteyiniz."
   }
 }

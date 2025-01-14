@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Param, Patch, Query } from "@nestjs/common"
 import { ApiQuery, ApiResponse } from "@nestjs/swagger"
 import { PublishStatus } from "@prisma/client"
-import { StatusApplicationDto } from "src/resources/dtos/requests/status-application.dto"
-import { StatusDeveloperDto } from "src/resources/dtos/requests/status-developer.dto"
+import { StatusApplicationRequest } from "src/resources/dtos/requests/status-application.request"
+import { StatusDeveloperRequest } from "src/resources/dtos/requests/status-developer.request"
 import { AdminService } from "src/resources/services/admin.service"
-import { ApplicationCardResponse } from "../dtos/responses/application-card.dto"
+import { ApplicationCardResponse } from "../dtos/responses/application-card.response"
 
 @Controller("admin")
 export class AdminController {
@@ -13,7 +13,7 @@ export class AdminController {
   @Patch("store/:reverseDomain/status")
   changeApplicationPublishStatus(
     @Param("reverseDomain") reverseDomain: string,
-    @Body() body: StatusApplicationDto
+    @Body() body: StatusApplicationRequest
   ) {
     return this.adminService.changeApplicationPublishStatus(
       reverseDomain,
@@ -25,11 +25,11 @@ export class AdminController {
   @ApiResponse({
     status: 200,
     description: "Developer status changed successfully",
-    type: StatusDeveloperDto
+    type: StatusDeveloperRequest
   })
   changeDeveloperStatus(
     @Param("username") username: string,
-    @Body() body: StatusDeveloperDto
+    @Body() body: StatusDeveloperRequest
   ) {
     return this.adminService.changeDeveloperStatus(username, body.approved)
   }

@@ -12,9 +12,9 @@ import {
   UseGuards
 } from "@nestjs/common"
 import { ApiOperation, ApiResponse } from "@nestjs/swagger"
-import { JwtAuthGuard } from "src/flow/guards/jwt.guard"
-import { UpdateApplicationDto } from "../dtos/requests/update-application.dto"
-import { UpdateApplicationResponse } from "../dtos/responses/update-application"
+import { DeveloperJwtAuthGuard } from "src/flow/guards/developer-jwt.guard"
+import { UpdateApplicationRequest } from "../dtos/requests/update-application.request"
+import { UpdateApplicationResponse } from "../dtos/responses/update-application.response"
 import { ApplicationsService } from "../services/applications.service"
 
 @ApiTags("Update Requests")
@@ -33,12 +33,12 @@ class UpdateRequestsController {
     description: "You are not the owner of this application."
   })
   @ApiResponse({ status: 404, description: "Application not found." })
-  @ApiBody({ type: UpdateApplicationDto })
-  @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: UpdateApplicationRequest })
+  @UseGuards(DeveloperJwtAuthGuard)
   @ApiBearerAuth()
   createUpdateRequest(
     @Param("reverseDomain") reverseDomain: string,
-    @Body() updateApplicationDto: UpdateApplicationDto
+    @Body() updateApplicationDto: UpdateApplicationRequest
   ) {
     return this.applicationsService.createUpdateRequest(
       reverseDomain,
@@ -55,7 +55,7 @@ class UpdateRequestsController {
   })
   @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
   @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(DeveloperJwtAuthGuard)
   @ApiBearerAuth()
   findUpdateRequestsOfDeveloper(
     @Req() request: AuthRequest,
@@ -80,7 +80,7 @@ class UpdateRequestsController {
     status: 403,
     description: "You are not the owner of this application."
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(DeveloperJwtAuthGuard)
   @ApiBearerAuth()
   findUpdateRequestOfDeveloper(
     @Req() request: AuthRequest,
@@ -103,7 +103,7 @@ class UpdateRequestsController {
     description: "You are not the owner of this application."
   })
   @ApiResponse({ status: 404, description: "Application not found." })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(DeveloperJwtAuthGuard)
   @ApiBearerAuth()
   deleteUpdateRequest(
     @Req() request: AuthRequest,

@@ -11,7 +11,7 @@ import {
   MinLength
 } from "class-validator"
 
-export class CreateApplicationDto {
+export class CreateApplicationRequest {
   @IsString({ message: "validations.common|field=name" })
   @MaxLength(100, { message: "validations.generic.max|max=100,field=name" })
   @ApiProperty({ description: "Name of the application" })

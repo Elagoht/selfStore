@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
 
-export class StatusDeveloperDto {
+export class StatusDeveloperRequest {
   @ApiProperty({
     description: "The id of the developer",
     example: "a453964d-8453-..."

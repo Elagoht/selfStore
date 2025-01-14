@@ -9,7 +9,7 @@ import {
   MinLength
 } from "class-validator"
 
-export class ProfileDeveloperDto {
+export class ProfileDeveloperResponse {
   @IsString()
   @MinLength(3)
   @MaxLength(20)

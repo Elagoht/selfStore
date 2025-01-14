@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { UpdateRequestStatus } from "@prisma/client"
 
-class ExistingApplicationListDetails {
+class ExistingApplicationListDetailsResponse {
   @ApiProperty({
     description: "The logo of the application"
   })
@@ -44,7 +44,7 @@ export class UpdateApplicationResponse {
 
   @ApiProperty({
     description: "The existing details of the application before the update",
-    type: ExistingApplicationListDetails
+    type: ExistingApplicationListDetailsResponse
   })
-  application: ExistingApplicationListDetails
+  application: ExistingApplicationListDetailsResponse
 }

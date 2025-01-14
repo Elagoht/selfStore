@@ -8,9 +8,9 @@ import { ForbiddenException, NotFoundException } from "src/utilities/Exceptions"
 import Paginator from "src/utilities/Paginator"
 import Printer from "src/utilities/Printer"
 import Transform from "src/utilities/Transform"
-import { CreateApplicationDto } from "../dtos/requests/create-application.dto"
-import { UpdateApplicationDto } from "../dtos/requests/update-application.dto"
-import { UpdateCreateRequestDto } from "../dtos/requests/update-creat-request.dto"
+import { CreateApplicationRequest } from "../dtos/requests/create-application.request"
+import { UpdateApplicationRequest } from "../dtos/requests/update-application.request"
+import { UpdateCreateRequest } from "../dtos/requests/update-creat-request.request"
 import { DeveloperService } from "./developer.service"
 
 const prisma = new PrismaClient()
@@ -18,7 +18,7 @@ const prisma = new PrismaClient()
 @Injectable()
 export class ApplicationsService {
   public async createCreateRequest(
-    createApplicationDto: CreateApplicationDto,
+    createApplicationDto: CreateApplicationRequest,
     developerId: string
   ) {
     const approvedUser = await DeveloperService.isApproved(developerId)
@@ -78,7 +78,7 @@ export class ApplicationsService {
 
   public async createUpdateRequest(
     reverseDomain: string,
-    updateApplicationDto: UpdateApplicationDto
+    updateApplicationDto: UpdateApplicationRequest
   ) {
     const owner = await this.getOwner(reverseDomain)
 
@@ -182,7 +182,7 @@ export class ApplicationsService {
   public async updateCreateRequest(
     developerId: string,
     reverseDomain: string,
-    updateCreateRequestDto: UpdateCreateRequestDto
+    updateCreateRequestDto: UpdateCreateRequest
   ) {
     const owner = await this.getOwner(reverseDomain)
 

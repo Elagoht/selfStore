@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger"
 import { PublishStatus } from "@prisma/client"
 import { IsEnum } from "class-validator"
 
-export class StatusApplicationDto {
+export class StatusApplicationRequest {
   @IsEnum(PublishStatus, {
     message: "validations.common|field=publishStatus"
   })

@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { IsString } from "class-validator"
 
-export class LoginResponseDto {
+export class LoginResponse {
   @IsString({ message: "validations.common|field=token" })
   @ApiProperty({
     description: "JWT token for authentication",

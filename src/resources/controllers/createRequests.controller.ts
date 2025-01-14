@@ -15,11 +15,11 @@ import {
   ApiResponse,
   ApiTags
 } from "@nestjs/swagger"
-import { JwtAuthGuard } from "src/flow/guards/jwt.guard"
-import { CreateApplicationDto } from "src/resources/dtos/requests/create-application.dto"
+import { DeveloperJwtAuthGuard } from "src/flow/guards/developer-jwt.guard"
+import { CreateApplicationRequest } from "src/resources/dtos/requests/create-application.request"
 import { Application } from "src/resources/models/application.model"
 import { ApplicationsService } from "src/resources/services/applications.service"
-import { UpdateCreateRequestDto } from "../dtos/requests/update-creat-request.dto"
+import { UpdateCreateRequest } from "../dtos/requests/update-creat-request.request"
 
 @ApiTags("Create Requests")
 @Controller("create")
@@ -31,16 +31,16 @@ export class CreateRequestsController {
     summary: "Create a new application request",
     description: "Create a new application request"
   })
-  @ApiBody({ type: CreateApplicationDto })
+  @ApiBody({ type: CreateApplicationRequest })
   @ApiResponse({
     status: 201,
     description: "The application request has been received.",
     type: Application
   })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(DeveloperJwtAuthGuard)
   @ApiBearerAuth()
   createCreateRequest(
-    @Body() createApplicationDto: CreateApplicationDto,
+    @Body() createApplicationDto: CreateApplicationRequest,
     @Req() request: AuthRequest
   ) {
     return this.applicationsService.createCreateRequest(
@@ -60,7 +60,7 @@ export class CreateRequestsController {
   })
   @ApiResponse({ status: 404, description: "Application not found." })
   @ApiOperation({ summary: "Delete a create request sent by you" })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(DeveloperJwtAuthGuard)
   @ApiBearerAuth()
   deleteCreateRequest(
     @Req() request: AuthRequest,
@@ -76,13 +76,13 @@ export class CreateRequestsController {
   @ApiOperation({
     summary: "Update a create request that not approved yet and sent by you"
   })
-  @ApiBody({ type: UpdateCreateRequestDto })
-  @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: UpdateCreateRequest })
+  @UseGuards(DeveloperJwtAuthGuard)
   @ApiBearerAuth()
   updateCreateRequest(
     @Req() request: AuthRequest,
     @Param("reverseDomain") reverseDomain: string,
-    @Body() updateCreateRequestDto: UpdateCreateRequestDto
+    @Body() updateCreateRequestDto: UpdateCreateRequest
   ) {
     return this.applicationsService.updateCreateRequest(
       request.user.sub,
