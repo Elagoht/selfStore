@@ -9,10 +9,17 @@ datasource db {
 
 model Admin {
   id         String   @id @default(uuid())
-  email      String
-  passphrase String
+  username   String   @unique
+  email      String   @unique
+  passphrase String   @db.VarChar(100)
   createdAt  DateTime @default(now())
   lastLogin  DateTime @default(now())
+  approved   Boolean  @default(false)
+}
+
+model AdminRegisterTokens {
+  token     String   @id @unique @default(uuid())
+  expiresAt DateTime
 }
 
 model Developer {
@@ -20,7 +27,7 @@ model Developer {
   username      String    @unique
   realName      String?
   email         String    @unique
-  passphrase    String
+  passphrase    String    @db.VarChar(100)
   approved      Boolean   @default(false)
   gitProfileUrl String
   bio           String?

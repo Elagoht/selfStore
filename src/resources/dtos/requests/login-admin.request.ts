@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { IsEmail, IsString } from "class-validator"
 
-export class LoginDeveloperRequest {
+export class LoginAdminRequest {
   @IsEmail({}, { message: "validations.email|field=email" })
   @ApiProperty({
     description: "Email of the developer",
