@@ -19,7 +19,9 @@ import { ApplicationsService } from "../services/applications.service"
 
 @ApiTags("Update Requests")
 @Controller("update")
-class UpdateRequestsController {
+@UseGuards(DeveloperJwtAuthGuard)
+@ApiBearerAuth()
+export class UpdateRequestsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
   @Patch(":reverseDomain")
@@ -34,8 +36,6 @@ class UpdateRequestsController {
   })
   @ApiResponse({ status: 404, description: "Application not found." })
   @ApiBody({ type: UpdateApplicationRequest })
-  @UseGuards(DeveloperJwtAuthGuard)
-  @ApiBearerAuth()
   createUpdateRequest(
     @Param("reverseDomain") reverseDomain: string,
     @Body() updateApplicationDto: UpdateApplicationRequest
@@ -55,8 +55,6 @@ class UpdateRequestsController {
   })
   @ApiQuery({ name: "page", type: Number, required: false, default: 1 })
   @ApiQuery({ name: "take", type: Number, required: false, default: 12 })
-  @UseGuards(DeveloperJwtAuthGuard)
-  @ApiBearerAuth()
   findUpdateRequestsOfDeveloper(
     @Req() request: AuthRequest,
     @Query("page") page: number,
@@ -80,8 +78,6 @@ class UpdateRequestsController {
     status: 403,
     description: "You are not the owner of this application."
   })
-  @UseGuards(DeveloperJwtAuthGuard)
-  @ApiBearerAuth()
   findUpdateRequestOfDeveloper(
     @Req() request: AuthRequest,
     @Param("reverseDomain") reverseDomain: string
@@ -103,8 +99,6 @@ class UpdateRequestsController {
     description: "You are not the owner of this application."
   })
   @ApiResponse({ status: 404, description: "Application not found." })
-  @UseGuards(DeveloperJwtAuthGuard)
-  @ApiBearerAuth()
   deleteUpdateRequest(
     @Req() request: AuthRequest,
     @Param("reverseDomain") reverseDomain: string
@@ -115,5 +109,3 @@ class UpdateRequestsController {
     )
   }
 }
-
-export default UpdateRequestsController

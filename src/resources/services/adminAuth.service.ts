@@ -18,6 +18,8 @@ export class AdminAuthService {
   private TOKEN_AGE = 1000 * 60 * 60 * 24
 
   public async registerAdmin(token: string, email: string, passphrase: string) {
+    this.deleteExpiredTokens()
+
     const record = await prisma.adminRegisterTokens.findUnique({
       where: { token }
     })
@@ -25,7 +27,6 @@ export class AdminAuthService {
     if (!record) throw new ForbiddenException("adminAuth.tokenInvalid")
 
     if (await this.isTokenExpired(token)) {
-      this.deleteToken(token)
       throw new ForbiddenException("adminAuth.tokenExpired")
     }
 
@@ -61,6 +62,12 @@ export class AdminAuthService {
   private deleteToken(token: string) {
     prisma.adminRegisterTokens.delete({
       where: { token }
+    })
+  }
+
+  private deleteExpiredTokens() {
+    prisma.adminRegisterTokens.deleteMany({
+      where: { expiresAt: { lt: new Date() } }
     })
   }
 

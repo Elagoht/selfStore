@@ -23,6 +23,8 @@ import { UpdateCreateRequest } from "../dtos/requests/update-creat-request.reque
 
 @ApiTags("Create Requests")
 @Controller("create")
+@UseGuards(DeveloperJwtAuthGuard)
+@ApiBearerAuth()
 export class CreateRequestsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
@@ -37,8 +39,6 @@ export class CreateRequestsController {
     description: "The application request has been received.",
     type: Application
   })
-  @UseGuards(DeveloperJwtAuthGuard)
-  @ApiBearerAuth()
   createCreateRequest(
     @Body() createApplicationDto: CreateApplicationRequest,
     @Req() request: AuthRequest
@@ -60,8 +60,6 @@ export class CreateRequestsController {
   })
   @ApiResponse({ status: 404, description: "Application not found." })
   @ApiOperation({ summary: "Delete a create request sent by you" })
-  @UseGuards(DeveloperJwtAuthGuard)
-  @ApiBearerAuth()
   deleteCreateRequest(
     @Req() request: AuthRequest,
     @Param("reverseDomain") reverseDomain: string
@@ -77,8 +75,6 @@ export class CreateRequestsController {
     summary: "Update a create request that not approved yet and sent by you"
   })
   @ApiBody({ type: UpdateCreateRequest })
-  @UseGuards(DeveloperJwtAuthGuard)
-  @ApiBearerAuth()
   updateCreateRequest(
     @Req() request: AuthRequest,
     @Param("reverseDomain") reverseDomain: string,

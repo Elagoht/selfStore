@@ -1,12 +1,23 @@
-import { Body, Controller, Get, Param, Patch, Query } from "@nestjs/common"
-import { ApiQuery, ApiResponse } from "@nestjs/swagger"
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  UseGuards
+} from "@nestjs/common"
+import { ApiBearerAuth, ApiQuery, ApiResponse } from "@nestjs/swagger"
 import { PublishStatus } from "@prisma/client"
+import { AdminJwtAuthGuard } from "src/flow/guards/admin-jwt.guard"
 import { StatusApplicationRequest } from "src/resources/dtos/requests/status-application.request"
 import { StatusDeveloperRequest } from "src/resources/dtos/requests/status-developer.request"
 import { AdminService } from "src/resources/services/admin.service"
 import { ApplicationCardResponse } from "../dtos/responses/application-card.response"
 
 @Controller("admin")
+@ApiBearerAuth()
+@UseGuards(AdminJwtAuthGuard)
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
