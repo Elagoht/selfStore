@@ -32,9 +32,6 @@ export class AdminService {
       where: { username },
       data: { approved }
     })
-    return {
-      id: developer.id,
-      approved: developer.approved
-    }
+    return { approved: developer.approved }
   }
 }

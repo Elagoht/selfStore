@@ -35,8 +35,7 @@ export class AdminController {
   @Patch("developers/status/:username")
   @ApiResponse({
     status: 200,
-    description: "Developer status changed successfully",
-    type: StatusDeveloperRequest
+    description: "Developer status changed successfully"
   })
   changeDeveloperStatus(
     @Param("username") username: string,
