@@ -26,6 +26,13 @@ export class AdminJwtAuthGuard extends AuthGuard("jwt") {
 
     const translator = new Translator(acceptLanguage)
 
+    if (error || !user) {
+      throw new UnauthorizedException({
+        messages: [translator.translate("errors.unauthorized")],
+        status: HttpStatus.UNAUTHORIZED
+      })
+    }
+
     if (!user.isAdmin) {
       throw new ForbiddenException({
         messages: [translator.translate("adminAuth.forbidden")],
@@ -33,12 +40,6 @@ export class AdminJwtAuthGuard extends AuthGuard("jwt") {
       })
     }
 
-    if (error || !user) {
-      throw new UnauthorizedException({
-        messages: [translator.translate("errors.unauthorized")],
-        status: HttpStatus.UNAUTHORIZED
-      })
-    }
     return user
   }
 }
