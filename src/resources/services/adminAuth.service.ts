@@ -87,7 +87,8 @@ export class AdminAuthService {
   private generateJWT(admin: Admin) {
     const payload = {
       sub: admin.id,
-      username: admin.username
+      username: admin.username,
+      isAdmin: true
     }
     return this.jwtService.sign(payload)
   }

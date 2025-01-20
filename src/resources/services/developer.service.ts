@@ -86,7 +86,8 @@ export class DeveloperService {
   private generateJWT(developer: Developer) {
     const payload = {
       sub: developer.id,
-      username: developer.username
+      username: developer.username,
+      isAdmin: false
     }
     return this.jwtService.sign(payload)
   }

@@ -1,5 +1,6 @@
 import {
   ExecutionContext,
+  ForbiddenException,
   HttpStatus,
   Injectable,
   UnauthorizedException
@@ -24,6 +25,13 @@ export class AdminJwtAuthGuard extends AuthGuard("jwt") {
       .getRequest().headers
 
     const translator = new Translator(acceptLanguage)
+
+    if (!user.isAdmin) {
+      throw new ForbiddenException({
+        messages: [translator.translate("adminAuth.forbidden")],
+        status: HttpStatus.FORBIDDEN
+      })
+    }
 
     if (error || !user) {
       throw new UnauthorizedException({

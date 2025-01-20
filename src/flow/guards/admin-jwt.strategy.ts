@@ -16,7 +16,8 @@ export class AdminJwtStrategy extends PassportStrategy(Strategy) {
   validate(payload: AuthRequest["user"]) {
     return {
       sub: payload.sub,
-      username: payload.username
+      username: payload.username,
+      isAdmin: payload.isAdmin
     }
   }
 }
